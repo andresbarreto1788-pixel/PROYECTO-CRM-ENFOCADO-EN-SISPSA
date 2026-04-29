@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e3e1eb",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#54647a",
+                        "background": "#fbf8ff",
+                        "surface-dim": "#dad9e3",
+                        "surface-variant": "#e3e1eb",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface-container-low": "#f4f2fc",
+                        "secondary-container": "#d0e1fb",
+                        "outline-variant": "#c4c5d5",
+                        "inverse-primary": "#b8c4ff",
+                        "tertiary": "#611e00",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-primary-fixed-variant": "#173bab",
+                        "tertiary-container": "#872d00",
+                        "primary": "#00288e",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "inverse-on-surface": "#f1f0fa",
+                        "primary-fixed": "#dde1ff",
+                        "on-surface": "#1a1b22",
+                        "on-background": "#1a1b22",
+                        "surface-tint": "#3755c3",
+                        "surface-container": "#eeedf7",
+                        "on-primary-container": "#a8b8ff",
+                        "surface-bright": "#fbf8ff",
+                        "surface-container-high": "#e8e7f1",
+                        "secondary-fixed": "#d3e4fe",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fbf8ff",
+                        "primary-container": "#1e40af",
+                        "inverse-surface": "#2f3037",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-primary-fixed": "#001453",
+                        "on-tertiary-container": "#ffa583",
+                        "secondary": "#505f76",
+                        "outline": "#757684",
+                        "on-surface-variant": "#444653",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "h3": ["Inter"], "h1": ["Inter"], "tabular-metrics": ["Inter"], "h2": ["Inter"], "metadata": ["Inter"], "body": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "h1": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "tabular-metrics": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "metadata": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "body": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: #ffffff;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0px 1px 3px rgba(15, 23, 42, 0.05);
+        }
+        .scanline {
+            height: 2px;
+            background: #1e40af;
+            box-shadow: 0 0 8px #1e40af;
+            position: absolute;
+            width: 100%;
+            top: 50%;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] font-body text-on-surface">
+<!-- Sidebar Wrapper -->
+<aside class="fixed left-0 top-0 h-screen w-[260px] border-r border-slate-200 bg-white dark:bg-slate-950 shadow-sm flex flex-col p-4 z-50">
+<div class="mb-8 px-2">
+<h1 class="text-xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Red Empresarial</h1>
+<p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">SISPSA CRM</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<!-- Active Item: Clients mapped to "Mis Afiliados" -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-md bg-slate-100 text-blue-800 font-semibold border-l-4 border-blue-800" href="#">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-medium">Clients</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-medium">Policies</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+<span class="font-medium">Claims</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-medium">Billing</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-slate-100 pt-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-500 hover:bg-slate-50" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+<span class="font-medium">Support</span>
+</a>
+<div class="flex items-center gap-3 px-3 py-3 mt-2 bg-slate-50 rounded-lg">
+<img alt="User Avatar" class="w-8 h-8 rounded-full border border-slate-200" data-alt="Professional portrait of a male insurance executive in a navy suit against a clean studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXevZn4yYiiyUcVn7dn_lS7q2uvx8SYhyTYEBe5J0jyFl4sSrSK5LezLnEGf7i140XCep1r2glz10BBzSWsawgE_-BNdGH2c9cCTNpyeZxfpZ1eB_E-0PvJsm3aZsqHDjG4qY7eoQFzWnYVoN9Q0gATb22KR6vNYRFbW9yF8YFED5xQkUc-ySvvC9FCNz8bJ94R19xtn8r3pZM-M3nIck3ITFHq9QlrUKXFpv7pzZ9IZzWywRWHgNNGvOgalQVS6DWsUO7iYq_202I"/>
+<div class="overflow-hidden">
+<p class="text-xs font-bold truncate">Agente Premium</p>
+<p class="text-[10px] text-slate-400">ID: 44920</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-[260px] min-h-screen">
+<!-- Top Nav -->
+<header class="sticky top-0 z-40 w-full h-16 px-8 border-b border-slate-200 bg-white/80 backdrop-blur-md flex items-center justify-between">
+<nav class="flex items-center gap-2 text-metadata text-slate-500">
+<span>Clients</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-medium">María González Pérez</span>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined text-slate-400 absolute left-3 top-1/2 -translate-y-1/2">search</span>
+<input class="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-xs w-64 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="Buscar afiliado..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">apps</button>
+</div>
+</header>
+<!-- Profile Canvas -->
+<div class="p-8 max-w-[1600px] mx-auto space-y-card-gap">
+<!-- 1. Top Profile Header -->
+<section class="glass-card rounded-xl p-6 flex flex-col md:flex-row items-center gap-8">
+<div class="relative">
+<div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center text-on-primary font-h2 text-[32px] shadow-lg">
+                        MG
+                    </div>
+<div class="absolute -bottom-1 -right-1 bg-white p-1 rounded-full border border-slate-100 shadow-sm">
+<span class="material-symbols-outlined text-emerald-500 text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center gap-3">
+<h2 class="font-h1 text-h1 text-slate-900">María González Pérez</h2>
+<span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-full border border-emerald-200 tracking-wider">ACTIVO</span>
+</div>
+<div class="flex flex-wrap gap-6 text-slate-500">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">fingerprint</span>
+<span class="text-body font-tabular-metrics">Cédula: V-18.456.789</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+<span class="text-body">maria.gperez@email.com</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">phone_iphone</span>
+<span class="text-body">+58 412-555-0199</span>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 bg-[#25D366] text-white rounded-lg hover:brightness-95 transition-all text-sm font-semibold">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+                        Contactar WhatsApp
+                    </button>
+<button class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-blue-800 transition-all text-sm font-semibold">
+                        Renovar Póliza
+                    </button>
+<button class="p-2.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 border border-slate-200 rounded-lg transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-card-gap">
+<!-- 2. Onboarding Inteligente -->
+<section class="glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-h3 text-h3 text-slate-900">Escaneo de Cédula con IA</h3>
+</div>
+<span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded">IA VERIFICADO ✓</span>
+</div>
+<div class="p-6 flex-1 flex flex-col gap-6">
+<div class="relative w-full aspect-[1.6/1] bg-slate-900 rounded-lg overflow-hidden border-2 border-slate-200 group">
+<img alt="Identification Document Mockup" class="w-full h-full object-cover opacity-80" data-alt="A macro photo of a Venezuelan national identity card with biometric holographic features under a professional blue office light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWRkVSZt_tW_3bXTAt94XcyGxqB11XbDNb8ehJRZT0Ttv0bIT2BHr4yPGi3UTGU2qEFdeUZtn30qZyN75kxZFx9QJrws4QMv7dKBCBONiOTsnqoZUyAlk6qXC5m8TAnCF-_2lxo-xOt07YV1RmHA0NdZ6uY696njY09uKnG3qqgD93Cv7-4NNuAjefWSYp0Dij3wsheK34edwfbut0OqlzM6CH-z6rG3WzFrEKleVQNOiwvMqxXNf20ex19br0fWPD2S5CT5rc50a6"/>
+<div class="absolute inset-0 bg-blue-900/20"></div>
+<div class="scanline animate-pulse"></div>
+<div class="absolute top-4 left-4 flex gap-2">
+<div class="bg-black/50 backdrop-blur-md px-2 py-1 rounded text-[10px] text-white flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> OCR LIVE
+                                </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Nombre</label>
+<input class="w-full bg-[#F1F5F9] border-slate-200 rounded text-sm text-slate-600 cursor-not-allowed" readonly="" type="text" value="María"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Apellido</label>
+<input class="w-full bg-[#F1F5F9] border-slate-200 rounded text-sm text-slate-600 cursor-not-allowed" readonly="" type="text" value="González Pérez"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Cédula</label>
+<input class="w-full bg-[#F1F5F9] border-slate-200 rounded text-sm text-slate-600 cursor-not-allowed" readonly="" type="text" value="18.456.789"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Fecha Nacimiento</label>
+<input class="w-full bg-[#F1F5F9] border-slate-200 rounded text-sm text-slate-600 cursor-not-allowed" readonly="" type="text" value="12/04/1988"/>
+</div>
+<div class="col-span-2 space-y-1.5">
+<label class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Dirección</label>
+<input class="w-full bg-[#F1F5F9] border-slate-200 rounded text-sm text-slate-600 cursor-not-allowed" readonly="" type="text" value="Av. Francisco de Miranda, Chacao, Caracas"/>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Detalles de la Póliza -->
+<section class="glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">shield</span>
+<h3 class="font-h3 text-h3 text-slate-900">Detalles de la Póliza</h3>
+</div>
+<span class="px-4 py-1 bg-amber-500 text-white text-[11px] font-black rounded-lg shadow-sm tracking-widest">PLAN ORO</span>
+</div>
+<div class="p-6 flex-1 space-y-6">
+<div class="grid grid-cols-2 gap-y-6 gap-x-8">
+<div>
+<p class="text-metadata text-slate-400 mb-1">Número de Póliza</p>
+<p class="font-tabular-metrics text-slate-900">HCP-2024-9981-MG</p>
+</div>
+<div>
+<p class="text-metadata text-slate-400 mb-1">Tipo de Plan</p>
+<p class="font-medium text-slate-900">Plan Familiar Premium</p>
+</div>
+<div>
+<p class="text-metadata text-slate-400 mb-1">Clínica de Preferencia</p>
+<p class="font-medium text-slate-900">Centro Médico de Caracas</p>
+</div>
+<div>
+<p class="text-metadata text-slate-400 mb-1">Cobertura</p>
+<p class="font-medium text-slate-900">Maternidad, Emergencias, Cirugía</p>
+</div>
+</div>
+<div class="bg-blue-50 rounded-xl p-5 border border-blue-100 flex items-center justify-between">
+<div>
+<p class="text-[10px] font-bold text-blue-800 uppercase tracking-widest mb-1">Prima Mensual</p>
+<div class="flex items-baseline gap-1">
+<span class="text-h2 font-black text-blue-900">$85.00</span>
+<span class="text-xs font-bold text-blue-800/60 uppercase">USD</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-metadata text-blue-800 mb-1">Próximo Pago: 15/05/2024</p>
+<span class="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-md">En 12 días</span>
+</div>
+</div>
+<div class="pt-4 flex gap-3">
+<button class="flex-1 px-4 py-3 bg-primary text-white rounded-lg font-semibold text-sm hover:brightness-110 transition-all">Gestionar Póliza</button>
+<button class="px-4 py-3 border border-slate-200 text-slate-600 rounded-lg font-semibold text-sm hover:bg-slate-50 transition-all">Historial de Pagos</button>
+</div>
+<div class="mt-4 p-4 rounded-lg bg-slate-50 border border-slate-100">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-rose-500 text-[18px]" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<p class="text-[11px] font-bold text-slate-900">Beneficios Exclusivos Plan Oro</p>
+</div>
+<ul class="text-[12px] text-slate-500 space-y-1 ml-6 list-disc">
+<li>Servicio de ambulancia 24/7 sin costo</li>
+<li>Médico a domicilio ilimitado</li>
+<li>Cobertura dental extendida al 100%</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<!-- 4. Timeline y Agenda -->
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-card-gap">
+<!-- Historial de Actividad (60%) -->
+<div class="lg:col-span-3 glass-card rounded-xl p-6">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-h3 text-h3 text-slate-900">Historial de Actividad</h3>
+<button class="text-xs font-bold text-primary hover:underline">Ver todo el historial</button>
+</div>
+<div class="relative space-y-8 before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">
+<!-- Timeline Item -->
+<div class="relative flex gap-6 pl-12 group">
+<div class="absolute left-0 w-10 h-10 bg-emerald-50 rounded-full border-4 border-white shadow-sm flex items-center justify-center z-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-emerald-600 text-[20px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900">Póliza activada exitosamente</p>
+<p class="text-xs text-slate-500">Activado por Agente Supervisor • Hace 2 horas</p>
+</div>
+</div>
+<div class="relative flex gap-6 pl-12 group">
+<div class="absolute left-0 w-10 h-10 bg-blue-50 rounded-full border-4 border-white shadow-sm flex items-center justify-center z-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-blue-600 text-[20px]">forward_to_inbox</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900">Correo de bienvenida enviado</p>
+<p class="text-xs text-slate-500">Manual de usuario y credenciales digitales • Hace 5 horas</p>
+</div>
+</div>
+<div class="relative flex gap-6 pl-12 group">
+<div class="absolute left-0 w-10 h-10 bg-amber-50 rounded-full border-4 border-white shadow-sm flex items-center justify-center z-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-amber-600 text-[20px]" style="font-variation-settings: 'FILL' 1;">package_2</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900">Kit de bienvenida entregado</p>
+<p class="text-xs text-slate-500">Carnet físico y listado de clínicas • 02/05/2024</p>
+</div>
+</div>
+<div class="relative flex gap-6 pl-12 group">
+<div class="absolute left-0 w-10 h-10 bg-slate-100 rounded-full border-4 border-white shadow-sm flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-slate-500 text-[20px]">assignment_turned_in</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900">Cierre de venta y contrato firmado</p>
+<p class="text-xs text-slate-500">Firma digital registrada vía Docusign • 28/04/2024</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Agenda Médica (40%) -->
+<div class="lg:col-span-2 glass-card rounded-xl p-6">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-h3 text-h3 text-slate-900">Agenda Médica</h3>
+<button class="p-1.5 bg-slate-50 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Appointment Card -->
+<div class="p-4 bg-white border-l-4 border-blue-600 rounded-r-xl border-y border-r border-slate-100 hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-2">
+<span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded">HOY 14:00</span>
+<span class="px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-bold rounded">CONFIRMADO</span>
+</div>
+<p class="font-bold text-slate-900 text-sm">Consulta General</p>
+<div class="flex items-center gap-2 mt-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-[16px]">person</span>
+<span>Dr. Alejandro Rivera</span>
+</div>
+</div>
+<div class="p-4 bg-white border-l-4 border-amber-500 rounded-r-xl border-y border-r border-slate-100 hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-2">
+<span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-[10px] font-bold rounded">MAÑANA 09:30</span>
+<span class="px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-bold rounded">PENDIENTE</span>
+</div>
+<p class="font-bold text-slate-900 text-sm">Cardiología (Eco-Doppler)</p>
+<div class="flex items-center gap-2 mt-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Centro Médico Ppal - Torre B</span>
+</div>
+</div>
+<div class="p-4 bg-white border-l-4 border-emerald-500 rounded-r-xl border-y border-r border-slate-100 hover:shadow-md transition-shadow opacity-75">
+<div class="flex justify-between items-start mb-2">
+<span class="px-2 py-0.5 bg-slate-50 text-slate-400 text-[10px] font-bold rounded">12 MAY</span>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded">PROGRAMADO</span>
+</div>
+<p class="font-bold text-slate-900 text-sm">Odontología Preventiva</p>
+<div class="flex items-center gap-2 mt-2 text-slate-500 text-xs">
+<span class="material-symbols-outlined text-[16px]">medical_information</span>
+<span>Dra. Elena Vazquez</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2.5 border-2 border-dashed border-slate-200 text-slate-400 font-bold text-xs rounded-xl hover:border-primary hover:text-primary transition-all uppercase tracking-widest">
+                        Agendar Nueva Cita
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pipeline de Ventas | Red Empresarial</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "primary": "#00288e",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-surface": "#1a1b22",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "surface": "#fbf8ff",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "outline": "#757684",
+                        "surface-dim": "#dad9e3",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "surface-tint": "#3755c3",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fbf8ff",
+                        "surface-variant": "#e3e1eb",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f4f2fc",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#e8e7f1",
+                        "secondary": "#505f76",
+                        "outline-variant": "#c4c5d5",
+                        "primary-container": "#1e40af",
+                        "on-primary-container": "#a8b8ff",
+                        "on-secondary-container": "#54647a",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "secondary-container": "#d0e1fb",
+                        "inverse-primary": "#b8c4ff",
+                        "on-background": "#1a1b22",
+                        "tertiary-container": "#872d00",
+                        "primary-fixed": "#dde1ff",
+                        "on-tertiary-container": "#ffa583",
+                        "surface-container-highest": "#e3e1eb",
+                        "inverse-on-surface": "#f1f0fa",
+                        "tertiary": "#611e00",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-surface-variant": "#444653",
+                        "on-primary-fixed-variant": "#173bab",
+                        "inverse-surface": "#2f3037",
+                        "surface-container": "#eeedf7",
+                        "on-primary-fixed": "#001453",
+                        "background": "#fbf8ff",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "card-gap": "1.5rem",
+                        "container-padding": "2rem",
+                        "base": "4px",
+                        "gutter": "1rem",
+                        "section-margin": "2.5rem"
+                    },
+                    "fontFamily": {
+                        "h2": ["Inter"],
+                        "metadata": ["Inter"],
+                        "h3": ["Inter"],
+                        "tabular-metrics": ["Inter"],
+                        "h1": ["Inter"],
+                        "body": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "metadata": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "tabular-metrics": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "h1": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .drag-preview { transform: rotate(3deg); transition: transform 0.2s ease; }
+        .pulse-dot { position: relative; }
+        .pulse-dot::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #10B981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] z-40 bg-slate-900 border-r border-slate-800 flex flex-col py-6 px-4">
+<div class="mb-10 px-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg">
+<span class="text-white font-black tracking-tighter text-xl">RE</span>
+</div>
+<div>
+<h2 class="text-white font-black tracking-tighter text-lg leading-tight">RED EMPRESARIAL</h2>
+<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Asesoría Corporativa</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-slate-400 hover:text-white px-4 py-2 flex items-center gap-3 hover:bg-slate-800/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">home</span>
+<span class="font-inter tracking-wider uppercase text-xs font-bold">Inicio</span>
+</a>
+<a class="text-slate-400 hover:text-white px-4 py-2 flex items-center gap-3 hover:bg-slate-800/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">group</span>
+<span class="font-inter tracking-wider uppercase text-xs font-bold">Mis Afiliados</span>
+</a>
+<a class="border-l-[3px] border-blue-600 bg-blue-900/30 text-white px-4 py-2 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">account_tree</span>
+<span class="font-inter tracking-wider uppercase text-xs font-bold font-semibold">Pipeline</span>
+</a>
+<a class="text-slate-400 hover:text-white px-4 py-2 flex items-center gap-3 hover:bg-slate-800/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+<span class="font-inter tracking-wider uppercase text-xs font-bold">Agenda</span>
+</a>
+<a class="text-slate-400 hover:text-white px-4 py-2 flex items-center gap-3 hover:bg-slate-800/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">school</span>
+<span class="font-inter tracking-wider uppercase text-xs font-bold">Academia</span>
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<a class="text-slate-400 hover:text-white px-4 py-2 flex items-center gap-3 hover:bg-slate-800/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+<span class="font-inter tracking-wider uppercase text-xs font-bold">Configuración</span>
+</a>
+<div class="pt-4 border-t border-slate-800 px-4 flex items-center gap-3">
+<img alt="Carlos Mendoza Avatar" class="w-8 h-8 rounded-full" data-alt="professional portrait of a middle-aged businessman in a suit with a friendly expression and neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6oLkBOa2--bj3mv7JpeYlon6XHrOFgozaFnqP5ly1OKB5k8_qizytDMnVBAVp1NiU45zxrfvECMHSyhlP8ObuxLwnhNGwSWw1uzDXwV_w25A5wRPbBzQMy5QupwooS-xfPC7a1fstCm0Mo_yXNDyMMOSyqXXNOg3BOQQc-XoC07DAKhtSojG10KQriRZa4ouyvfpmG9eZ5XQzAVCHrR2bQ51QgFK_VsK4teYdE-9c4Meqzd2Q68J7Zcj4k6oqLxLoERnceMCha3np"/>
+<span class="text-slate-200 text-xs font-semibold">Carlos Mendoza</span>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 flex items-center justify-between h-16 px-8 ml-[260px] w-[calc(100%-260px)]">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full bg-slate-50 border-slate-200 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="Buscar prospectos..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4">
+<button class="text-slate-500 hover:text-blue-600 transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="text-slate-500 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+<div class="h-6 w-px bg-slate-200"></div>
+<div class="flex items-center gap-2">
+<span class="text-blue-700 font-bold text-sm">Pipeline de Ventas</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[260px] p-container-padding min-h-[calc(100vh-64px)]">
+<!-- Page Header -->
+<div class="flex flex-col gap-6 mb-8">
+<div class="flex items-start justify-between">
+<div>
+<h1 class="font-h1 text-h1 text-slate-900">Pipeline de Ventas</h1>
+<p class="text-body font-body text-slate-500 mt-1">Gestiona el ciclo de vida de tus prospectos desde el primer contacto hasta la afiliación</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 border border-slate-200 px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-lg">list</span>
+                        Vista Lista
+                    </button>
+<button class="flex items-center gap-2 bg-primary-container text-white px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Añadir Prospecto
+                    </button>
+</div>
+</div>
+<!-- Stats Row -->
+<div class="flex gap-8 items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+<span class="font-tabular-metrics text-tabular-metrics text-slate-900">28 Prospectos</span>
+</div>
+<div class="w-px h-4 bg-slate-200"></div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="font-tabular-metrics text-tabular-metrics text-slate-900">$2,450 Proyectados/mes</span>
+</div>
+<div class="w-px h-4 bg-slate-200"></div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-tabular-metrics text-tabular-metrics text-slate-900">68% Tasa de Conversión</span>
+</div>
+</div>
+</div>
+<!-- Kanban Board -->
+<div class="flex gap-4 overflow-x-auto pb-8 scrollbar-hide">
+<!-- Column: Nuevo Prospecto -->
+<div class="flex-shrink-0 w-[280px]">
+<div class="bg-white border-t-4 border-blue-400 rounded-t-lg px-4 py-3 flex flex-col gap-1 shadow-sm border-x border-b border-slate-200">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-800">Nuevo Prospecto</span>
+<span class="bg-blue-50 text-blue-700 text-[11px] font-bold px-2 py-0.5 rounded-full">8</span>
+</div>
+<span class="text-[11px] font-medium text-slate-500">$196/mes proyectado</span>
+</div>
+<div class="mt-3 space-y-3">
+<button class="w-full py-3 border-2 border-dashed border-slate-200 rounded-lg text-slate-400 text-sm font-medium hover:border-blue-400 hover:text-blue-500 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Añadir Prospecto
+                    </button>
+<!-- Card: Laura Martínez -->
+<div class="bg-white rounded-lg p-4 border border-slate-200 border-l-4 border-l-blue-400 shadow-sm hover:shadow-md transition-shadow cursor-grab">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs">LM</div>
+<span class="text-xs font-bold text-slate-800">Laura Martínez</span>
+</div>
+<span class="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-full">ALTA</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Oro</span>
+<div class="font-tabular-metrics text-tabular-metrics text-slate-900">$1,200 <span class="text-[10px] font-normal text-slate-500">est.</span></div>
+</div>
+<div class="mt-4 flex items-center justify-between pt-3 border-t border-slate-50">
+<div class="flex items-center gap-2 text-slate-400">
+<span class="material-symbols-outlined text-base">call</span>
+<span class="text-[10px]">Hace 2 días</span>
+</div>
+<span class="material-symbols-outlined text-base text-slate-300">more_vert</span>
+</div>
+</div>
+<!-- Empty Placeholder for drag effect -->
+<div class="border-2 border-dashed border-slate-200 rounded-lg h-32 bg-slate-50/50"></div>
+</div>
+</div>
+<!-- Column: Propuesta Enviada -->
+<div class="flex-shrink-0 w-[280px]">
+<div class="bg-white border-t-4 border-blue-500 rounded-t-lg px-4 py-3 flex flex-col gap-1 shadow-sm border-x border-b border-slate-200">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-800">Propuesta Enviada</span>
+<span class="bg-blue-50 text-blue-700 text-[11px] font-bold px-2 py-0.5 rounded-full">5</span>
+</div>
+<span class="text-[11px] font-medium text-slate-500">$142/mes proyectado</span>
+</div>
+<div class="mt-3 space-y-3">
+<!-- Dragging Card Mockup -->
+<div class="bg-white rounded-lg p-4 border border-slate-200 border-l-4 border-l-blue-500 shadow-xl drag-preview cursor-grabbing bg-white/95 backdrop-blur z-50">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">AG</div>
+<span class="text-xs font-bold text-slate-800">Andrés García</span>
+</div>
+<span class="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-full">ALTA</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Esmeralda</span>
+<div class="font-tabular-metrics text-tabular-metrics text-slate-900">$2,450 <span class="text-[10px] font-normal text-slate-500">est.</span></div>
+</div>
+<div class="mt-4 flex items-center justify-between pt-3 border-t border-slate-50">
+<div class="flex items-center gap-2 text-slate-400">
+<span class="material-symbols-outlined text-base">mail</span>
+<span class="text-[10px]">Hace 4 horas</span>
+</div>
+<span class="material-symbols-outlined text-base text-slate-300">more_vert</span>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 border border-slate-200 border-l-4 border-l-blue-500 shadow-sm hover:shadow-md transition-shadow cursor-grab">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold text-xs">MR</div>
+<span class="text-xs font-bold text-slate-800">Mercedes Rivas</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-full">MEDIA</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Oro</span>
+<div class="font-tabular-metrics text-tabular-metrics text-slate-900">$1,200 <span class="text-[10px] font-normal text-slate-500">est.</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: En Negociación -->
+<div class="flex-shrink-0 w-[280px]">
+<div class="bg-white border-t-4 border-amber-500 rounded-t-lg px-4 py-3 flex flex-col gap-1 shadow-sm border-x border-b border-slate-200">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-800">En Negociación</span>
+<span class="bg-amber-50 text-amber-700 text-[11px] font-bold px-2 py-0.5 rounded-full">4</span>
+</div>
+<span class="text-[11px] font-medium text-slate-500">$108/mes proyectado</span>
+</div>
+<div class="mt-3 space-y-3">
+<div class="bg-white rounded-lg p-4 border border-slate-200 border-l-4 border-l-amber-500 shadow-sm hover:shadow-md transition-shadow cursor-grab">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 font-bold text-xs">RH</div>
+<span class="text-xs font-bold text-slate-800">Ricardo Hernández</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-full">MEDIA</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Oro</span>
+<div class="font-tabular-metrics text-tabular-metrics text-slate-900">$1,200 <span class="text-[10px] font-normal text-slate-500">est.</span></div>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 border border-slate-200 border-l-4 border-l-amber-500 shadow-sm hover:shadow-md transition-shadow cursor-grab">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">PP</div>
+<span class="text-xs font-bold text-slate-800">Patricia Pinto</span>
+</div>
+<span class="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-full">ALTA</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Esmeralda</span>
+<div class="font-tabular-metrics text-tabular-metrics text-slate-900">$2,450 <span class="text-[10px] font-normal text-slate-500">est.</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Esperando Pago -->
+<div class="flex-shrink-0 w-[280px]">
+<div class="bg-green-50/50 border-t-4 border-green-500 rounded-t-lg px-4 py-3 flex flex-col gap-1 shadow-[0px_0px_15px_rgba(16,185,129,0.1)] border-x border-b border-green-100">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-green-800">Esperando Pago</span>
+<span class="bg-green-100 text-green-700 text-[11px] font-bold px-2 py-0.5 rounded-full">3</span>
+</div>
+<span class="text-[11px] font-medium text-green-600">$79/mes proyectado</span>
+</div>
+<div class="mt-3 space-y-3">
+<div class="bg-white rounded-lg p-4 border border-slate-200 border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-shadow cursor-grab">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-xs">FB</div>
+<div class="absolute -top-1 -right-1 pulse-dot"></div>
+</div>
+<span class="text-xs font-bold text-slate-800">Fernanda Blanco</span>
+</div>
+<span class="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-full">ALTA</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Oro</span>
+<div class="font-tabular-metrics text-tabular-metrics text-slate-900">$1,200 <span class="text-[10px] font-normal text-slate-500 text-green-600 font-bold">Vencido</span></div>
+</div>
+<div class="mt-4 flex items-center justify-between pt-3 border-t border-slate-50">
+<div class="flex items-center gap-2 text-green-600">
+<span class="material-symbols-outlined text-base">payments</span>
+<span class="text-[10px] font-bold">Seguimiento hoy</span>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 border border-slate-200 border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-shadow cursor-grab">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold text-xs">LT</div>
+<span class="text-xs font-bold text-slate-800">Luis Torres</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-full">MEDIA</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Plata</span>
+<div class="font-tabular-metrics text-tabular-metrics text-slate-900">$800 <span class="text-[10px] font-normal text-slate-500">est.</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Afiliación Exitosa -->
+<div class="flex-shrink-0 w-[280px]">
+<div class="bg-emerald-50 border-t-4 border-emerald-600 rounded-t-lg px-4 py-3 flex flex-col gap-1 shadow-sm border-x border-b border-emerald-100">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-emerald-800">Afiliación Exitosa</span>
+<span class="bg-emerald-100 text-emerald-700 text-[11px] font-bold px-2 py-0.5 rounded-full">8</span>
+</div>
+<span class="text-[11px] font-medium text-emerald-600">$232/mes proyectado</span>
+</div>
+<div class="mt-3 space-y-3 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100 min-h-[500px]">
+<div class="bg-white rounded-lg p-4 border border-slate-100 border-l-4 border-l-emerald-600 shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">AM</div>
+<span class="text-xs font-bold text-slate-800">Andrea Mejía</span>
+</div>
+<span class="material-symbols-outlined text-emerald-500 text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Oro</span>
+<div class="text-[10px] font-medium text-slate-500">Afiliada el 15/04/2024</div>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 border border-slate-100 border-l-4 border-l-emerald-600 shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">GT</div>
+<span class="text-xs font-bold text-slate-800">Gabriel Tovar</span>
+</div>
+<span class="material-symbols-outlined text-emerald-500 text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="space-y-2">
+<span class="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Esmeralda</span>
+<div class="text-[10px] font-medium text-slate-500">Afiliado el 12/04/2024</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

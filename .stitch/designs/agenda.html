@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "surface-dim": "#dad9e3",
+                        "surface-container": "#eeedf7",
+                        "surface-container-low": "#f4f2fc",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#ffa583",
+                        "on-background": "#1a1b22",
+                        "surface-tint": "#3755c3",
+                        "primary-fixed": "#dde1ff",
+                        "secondary-container": "#d0e1fb",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-primary-container": "#a8b8ff",
+                        "surface-bright": "#fbf8ff",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#611e00",
+                        "tertiary-container": "#872d00",
+                        "on-secondary-fixed": "#0b1c30",
+                        "secondary-fixed": "#d3e4fe",
+                        "primary-container": "#1e40af",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "on-error": "#ffffff",
+                        "on-surface": "#1a1b22",
+                        "secondary": "#505f76",
+                        "on-surface-variant": "#444653",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "outline": "#757684",
+                        "inverse-primary": "#b8c4ff",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e8e7f1",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#2f3037",
+                        "on-primary-fixed-variant": "#173bab",
+                        "inverse-on-surface": "#f1f0fa",
+                        "surface": "#fbf8ff",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface-container-highest": "#e3e1eb",
+                        "background": "#fbf8ff",
+                        "surface-variant": "#e3e1eb",
+                        "primary": "#00288e",
+                        "on-secondary-container": "#54647a",
+                        "on-primary-fixed": "#001453",
+                        "outline-variant": "#c4c5d5",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "card-gap": "1.5rem",
+                        "section-margin": "2.5rem",
+                        "container-padding": "2rem",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "metadata": ["Inter"],
+                        "tabular-metrics": ["Inter"],
+                        "body": ["Inter"],
+                        "h2": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"]
+                    },
+                    "fontSize": {
+                        "metadata": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "tabular-metrics": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "body": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "h1": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ba1a1a;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(186, 26, 26, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(186, 26, 26, 0); }
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+        }
+        .time-slot { height: 80px; border-bottom: 1px solid #e2e8f0; }
+        .day-column { border-right: 1px solid #e2e8f0; position: relative; }
+        .event-card { position: absolute; left: 4px; right: 4px; z-index: 10; padding: 6px 8px; border-radius: 4px; border-left-width: 4px; font-size: 11px; line-height: 1.2; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body text-body antialiased">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-slate-900 border-r border-slate-800 flex flex-col py-6 z-[60]">
+<div class="px-6 mb-8">
+<h1 class="text-xl font-bold tracking-tight text-white font-h1">RED EMPRESARIAL</h1>
+<p class="text-xs text-slate-400 font-metadata">Health Insurance CRM</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-slate-400 hover:bg-slate-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-medium">Inicio</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-400 hover:bg-slate-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-medium">Mis Afiliados</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-400 hover:bg-slate-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-medium">Pipeline</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 bg-primary-container/20 text-blue-400 font-semibold border-r-4 border-primary-container" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-medium">Agenda</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-400 hover:bg-slate-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-medium">Academia</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-400 hover:bg-slate-800/50 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Configuración</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/40">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white text-xs font-bold">RE</div>
+<div class="overflow-hidden">
+<p class="text-xs font-semibold text-white truncate">Admin Principal</p>
+<p class="text-[10px] text-slate-500 truncate">Soporte Premium</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="ml-[260px] flex flex-col min-h-screen">
+<!-- TopNavBar Shell -->
+<header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm h-16 flex justify-between items-center px-8">
+<div class="flex items-center gap-4">
+<h2 class="font-h2 text-h2 text-primary">Agenda de Seguimiento</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-primary-container transition-all" placeholder="Buscar citas o afiliados..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-slate-500">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">help</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<main class="flex-1 flex overflow-hidden">
+<!-- Calendar Section (70%) -->
+<div class="w-full lg:w-[70%] p-gutter overflow-y-auto">
+<div class="bg-surface-container-lowest rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+<!-- Calendar Header -->
+<div class="flex items-center justify-between p-6 border-b border-slate-100">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-600">chevron_left</span>
+</button>
+<h3 class="font-h3 text-h3 text-slate-800">Abril 22 — 28, 2024</h3>
+<button class="p-2 hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-600">chevron_right</span>
+</button>
+</div>
+<div class="flex bg-slate-100 p-1 rounded-lg">
+<button class="px-4 py-1.5 text-xs font-semibold rounded-md transition-all hover:bg-white/50">Día</button>
+<button class="px-4 py-1.5 text-xs font-semibold rounded-md bg-white shadow-sm text-primary">Semana</button>
+<button class="px-4 py-1.5 text-xs font-semibold rounded-md transition-all hover:bg-white/50">Mes</button>
+</div>
+</div>
+<!-- Week View Grid -->
+<div class="calendar-grid overflow-x-auto min-w-[800px]">
+<!-- Day Headers -->
+<div class="h-16 border-b border-r border-slate-100 flex items-center justify-center text-slate-400 font-metadata">GMT-5</div>
+<div class="h-16 border-b border-slate-100 flex flex-col items-center justify-center">
+<span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Lun</span>
+<span class="text-lg font-bold text-slate-700">22</span>
+</div>
+<div class="h-16 border-b border-slate-100 flex flex-col items-center justify-center">
+<span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Mar</span>
+<span class="text-lg font-bold text-slate-700">23</span>
+</div>
+<div class="h-16 border-b border-slate-100 flex flex-col items-center justify-center bg-blue-50/30">
+<span class="text-[10px] uppercase font-bold text-primary tracking-wider">Mié</span>
+<span class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full text-lg font-bold">24</span>
+</div>
+<div class="h-16 border-b border-slate-100 flex flex-col items-center justify-center">
+<span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Jue</span>
+<span class="text-lg font-bold text-slate-700">25</span>
+</div>
+<div class="h-16 border-b border-slate-100 flex flex-col items-center justify-center">
+<span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Vie</span>
+<span class="text-lg font-bold text-slate-700">26</span>
+</div>
+<div class="h-16 border-b border-slate-100 flex flex-col items-center justify-center">
+<span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Sáb</span>
+<span class="text-lg font-bold text-slate-400">27</span>
+</div>
+<div class="h-16 border-b border-slate-100 flex flex-col items-center justify-center">
+<span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Dom</span>
+<span class="text-lg font-bold text-slate-400">28</span>
+</div>
+<!-- Time Rows -->
+<!-- 8 AM to 6 PM (simplified for code length) -->
+<div class="contents">
+<!-- Helper for 8 AM -->
+<div class="time-slot border-r border-slate-100 flex items-center justify-center text-metadata text-slate-400">08:00</div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100 bg-blue-50/20"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-slate-100"></div>
+<!-- 9 AM Row -->
+<div class="time-slot border-r border-slate-100 flex items-center justify-center text-metadata text-slate-400">09:00</div>
+<!-- Monday 9 AM -->
+<div class="time-slot border-r border-slate-100 relative">
+<div class="event-card top-2 h-[36px] bg-blue-50 border-blue-600 text-blue-700">
+<span class="font-bold">Seguimiento</span>
+<p>María González</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100"></div>
+<!-- Wednesday 9 AM -->
+<div class="time-slot border-r border-slate-100 bg-blue-50/20 relative">
+<div class="event-card top-0 h-[76px] bg-green-50 border-green-600 text-green-700">
+<div class="flex items-center gap-1">
+<span class="pulse-dot"></span>
+<span class="font-bold">Cita Médica</span>
+</div>
+<p>Carmen Herrera</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100"></div>
+<!-- Friday 9 AM -->
+<div class="time-slot border-r border-slate-100 relative">
+<div class="event-card top-2 h-[36px] bg-red-50 border-error text-error">
+<span class="font-bold">URGENTE</span>
+<p>Vencimiento M. Torres</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-slate-100"></div>
+<!-- 10 AM Row -->
+<div class="time-slot border-r border-slate-100 flex items-center justify-center text-metadata text-slate-400">10:00</div>
+<div class="time-slot border-r border-slate-100"></div>
+<!-- Tuesday 10 AM -->
+<div class="time-slot border-r border-slate-100 relative">
+<div class="event-card top-2 h-[36px] bg-amber-50 border-amber-500 text-amber-800">
+<span class="font-bold">Póliza</span>
+<p>José Ramírez</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100 bg-blue-50/20"></div>
+<!-- Thursday 10 AM -->
+<div class="time-slot border-r border-slate-100 relative">
+<div class="event-card top-0 h-[76px] bg-green-50 border-green-600 text-green-700">
+<span class="font-bold">Cita Médica</span>
+<p>Fernando López</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-slate-100"></div>
+<!-- 11 AM Row -->
+<div class="time-slot border-r border-slate-100 flex items-center justify-center text-metadata text-slate-400">11:00</div>
+<div class="time-slot border-r border-slate-100"></div>
+<!-- Tuesday 11 AM -->
+<div class="time-slot border-r border-slate-100 relative">
+<div class="event-card top-2 h-[36px] bg-blue-50 border-blue-600 text-blue-700">
+<span class="font-bold">Carga Docs</span>
+<p>Laura Martínez</p>
+</div>
+</div>
+<!-- Wednesday 11 AM -->
+<div class="time-slot border-r border-slate-100 bg-blue-50/20 relative">
+<div class="event-card top-[36px] h-[36px] bg-blue-50 border-blue-600 text-blue-700">
+<span class="font-bold">Seguimiento</span>
+<p>Roberto Sánchez</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-slate-100"></div>
+<!-- 12 PM - 2 PM (Simplified) -->
+<div class="time-slot border-r border-slate-100 flex items-center justify-center text-metadata text-slate-400">14:00</div>
+<!-- Monday 2 PM -->
+<div class="time-slot border-r border-slate-100 relative">
+<div class="event-card top-2 h-[76px] bg-green-50 border-green-600 text-green-700">
+<span class="font-bold">Cita médica</span>
+<p>Ana Pérez</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100 bg-blue-50/20"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<!-- Friday 2 PM -->
+<div class="time-slot border-r border-slate-100 relative">
+<div class="event-card top-2 h-[36px] bg-blue-50 border-blue-600 text-blue-700">
+<span class="font-bold">Onboarding</span>
+<p>Sofía Rodríguez</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-slate-100"></div>
+<!-- 3 PM Row -->
+<div class="time-slot border-r border-slate-100 flex items-center justify-center text-metadata text-slate-400">15:00</div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<!-- Wednesday 3 PM -->
+<div class="time-slot border-r border-slate-100 bg-blue-50/20 relative">
+<div class="event-card top-2 h-[36px] bg-amber-50 border-amber-500 text-amber-800">
+<span class="font-bold">Renovación</span>
+<p>Isabella Morales</p>
+</div>
+</div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-r border-slate-100"></div>
+<div class="time-slot border-slate-100"></div>
+</div>
+</div>
+<!-- Calendar Legend -->
+<div class="p-6 border-t border-slate-100 bg-slate-50/50 flex flex-wrap gap-6 items-center">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-green-500"></div>
+<span class="text-xs text-slate-600 font-medium">Cita Médica</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-blue-600"></div>
+<span class="text-xs text-slate-600 font-medium">Seguimiento</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-amber-500"></div>
+<span class="text-xs text-slate-600 font-medium">Vencimiento/Renovación</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-red-600"></div>
+<span class="text-xs text-slate-600 font-medium">Urgente</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-slate-300"></div>
+<span class="text-xs text-slate-600 font-medium">Documentos</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Task Section (30%) -->
+<aside class="hidden lg:flex w-[30%] bg-slate-950 border-l border-slate-800 flex-col overflow-y-auto">
+<div class="p-8">
+<div class="mb-8">
+<h3 class="text-white font-h3 text-h3 mb-1">Tareas para Hoy</h3>
+<p class="text-slate-400 font-metadata">Miércoles 24 de Abril</p>
+</div>
+<!-- Checklist -->
+<div class="space-y-4 mb-10">
+<!-- Checked Item -->
+<div class="group flex gap-4 bg-slate-900/50 p-4 rounded-xl border border-slate-800/50 opacity-60">
+<div class="mt-1">
+<span class="material-symbols-outlined text-green-500" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold text-slate-400">8:30 AM</span>
+</div>
+<p class="text-sm text-slate-300 line-through">Enviar correo bienvenida Andrea Mejía</p>
+</div>
+</div>
+<!-- Active Item 1 -->
+<div class="group flex gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 transition-all hover:border-primary-container">
+<div class="mt-1">
+<span class="material-symbols-outlined text-slate-600">radio_button_unchecked</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold text-green-400">9:00 AM</span>
+<span class="pulse-dot"></span>
+</div>
+<p class="text-sm text-white mb-3">Confirmar cita Carmen Herrera</p>
+<button class="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg text-xs font-bold transition-all">
+<span class="material-symbols-outlined text-sm">chat</span>
+                                    WhatsApp
+                                </button>
+</div>
+</div>
+<!-- Active Item 2 -->
+<div class="group flex gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 transition-all hover:border-primary-container">
+<div class="mt-1">
+<span class="material-symbols-outlined text-slate-600">radio_button_unchecked</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold text-blue-400">11:30 AM</span>
+</div>
+<p class="text-sm text-white mb-3">Seguimiento Roberto Sánchez</p>
+<button class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-bold transition-all">
+<span class="material-symbols-outlined text-sm">call</span>
+                                    Llamar
+                                </button>
+</div>
+</div>
+<!-- Active Item 3 -->
+<div class="group flex gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 transition-all hover:border-primary-container">
+<div class="mt-1">
+<span class="material-symbols-outlined text-slate-600">radio_button_unchecked</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold text-amber-400">3:00 PM</span>
+</div>
+<p class="text-sm text-white mb-3">Recordar renovación Isabella Morales</p>
+<button class="w-full flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg text-xs font-bold transition-all">
+<span class="material-symbols-outlined text-sm">chat</span>
+                                    Recordar
+                                </button>
+</div>
+</div>
+<!-- Active Item 4 -->
+<div class="group flex gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800 transition-all hover:border-primary-container">
+<div class="mt-1">
+<span class="material-symbols-outlined text-slate-600">radio_button_unchecked</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold text-slate-400">Pendiente</span>
+</div>
+<p class="text-sm text-white mb-3">Preparar documentos Luis Torres</p>
+<button class="w-full flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white py-2 rounded-lg text-xs font-bold transition-all">
+<span class="material-symbols-outlined text-sm">description</span>
+                                    Ver Docs
+                                </button>
+</div>
+</div>
+</div>
+<!-- Stats -->
+<div class="grid grid-cols-1 gap-4 mb-10">
+<div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex justify-between items-center">
+<span class="text-xs text-slate-400">Citas Médicas</span>
+<span class="text-lg font-bold text-green-500">3</span>
+</div>
+<div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex justify-between items-center">
+<span class="text-xs text-slate-400">Seguimientos</span>
+<span class="text-lg font-bold text-blue-400">2</span>
+</div>
+<div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex justify-between items-center">
+<span class="text-xs text-slate-400">Vencimiento</span>
+<span class="text-lg font-bold text-amber-500">1</span>
+</div>
+</div>
+<!-- Upcoming 7 Days -->
+<div class="border-t border-slate-800 pt-8">
+<h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Próximos 7 Días</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-slate-900 flex flex-col items-center justify-center">
+<span class="text-[8px] text-slate-500 leading-none">ABR</span>
+<span class="text-xs font-bold text-white">25</span>
+</div>
+<span class="text-xs text-slate-300">Cita Fernando López</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-slate-900 flex flex-col items-center justify-center">
+<span class="text-[8px] text-slate-500 leading-none">ABR</span>
+<span class="text-xs font-bold text-white">26</span>
+</div>
+<span class="text-xs text-slate-300">Vencimiento Miguel Torres</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-red-600"></span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-slate-900 flex flex-col items-center justify-center">
+<span class="text-[8px] text-slate-500 leading-none">ABR</span>
+<span class="text-xs font-bold text-white">26</span>
+</div>
+<span class="text-xs text-slate-300">Onboarding Sofía R.</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-blue-600"></span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</div>
+<!-- Floating Action Button Contextual Support -->
+<button class="fixed bottom-8 right-[32%] z-50 bg-primary hover:bg-primary-container text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+</body></html>

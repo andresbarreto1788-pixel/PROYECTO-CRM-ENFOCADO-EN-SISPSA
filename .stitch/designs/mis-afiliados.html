@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RED EMPRESARIAL - Mis Afiliados</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fbf8ff",
+                    "on-secondary-container": "#54647a",
+                    "surface-container-high": "#e8e7f1",
+                    "on-primary-fixed-variant": "#173bab",
+                    "surface-container-highest": "#e3e1eb",
+                    "on-primary-fixed": "#001453",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-container": "#ffa583",
+                    "secondary": "#505f76",
+                    "on-tertiary-fixed": "#380d00",
+                    "on-primary-container": "#a8b8ff",
+                    "secondary-fixed": "#d3e4fe",
+                    "on-background": "#1a1b22",
+                    "surface-dim": "#dad9e3",
+                    "primary": "#1e40af",
+                    "surface-tint": "#3755c3",
+                    "outline": "#757684",
+                    "background": "#fbf8ff",
+                    "surface-container-low": "#f4f2fc",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "tertiary-fixed": "#ffdbce",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fbf8ff",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#b8c4ff",
+                    "inverse-on-surface": "#f1f0fa",
+                    "on-tertiary-fixed-variant": "#802a00",
+                    "error": "#ba1a1a",
+                    "tertiary": "#611e00",
+                    "primary-container": "#1e40af",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#dde1ff",
+                    "on-surface-variant": "#444653",
+                    "surface-container": "#eeedf7",
+                    "on-surface": "#1a1b22",
+                    "error-container": "#ffdad6",
+                    "inverse-primary": "#b8c4ff",
+                    "on-secondary-fixed": "#0b1c30",
+                    "inverse-surface": "#2f3037",
+                    "outline-variant": "#c4c5d5",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#872d00",
+                    "secondary-container": "#d0e1fb",
+                    "surface-variant": "#e3e1eb",
+                    "on-secondary-fixed-variant": "#38485d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "card-gap": "1.5rem",
+                    "gutter": "1rem",
+                    "base": "4px",
+                    "section-margin": "2.5rem",
+                    "container-padding": "2rem"
+            },
+            "fontFamily": {
+                    "h3": ["Inter"],
+                    "h2": ["Inter"],
+                    "tabular-metrics": ["Inter"],
+                    "h1": ["Inter"],
+                    "body": ["Inter"],
+                    "metadata": ["Inter"]
+            },
+            "fontSize": {
+                    "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "tabular-metrics": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "h1": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "metadata": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .table-row-hover:hover { background-color: rgba(241, 245, 249, 0.5); }
+    </style>
+</head>
+<body class="h-full font-body text-on-surface">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[260px] border-r bg-slate-950 border-slate-800 shadow-none flex flex-col h-full font-inter antialiased z-50">
+<div class="px-6 py-8 flex items-center gap-3">
+<div class="w-10 h-10 bg-white rounded flex items-center justify-center shrink-0">
+<span class="text-primary font-black tracking-tighter text-xl">RE</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xl font-black tracking-tight text-white leading-none">RED EMPRESARIAL</span>
+<span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Health Insurance CRM</span>
+</div>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition-colors active:opacity-80 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-white bg-blue-600/10 border-r-2 border-blue-600 transition-colors active:opacity-80 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+                Mis Afiliados
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition-colors active:opacity-80 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+                Gestión de Planes
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition-colors active:opacity-80 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+                Reclamaciones
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition-colors active:opacity-80 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Reportes
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition-colors active:opacity-80 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Configuración
+            </a>
+</nav>
+<div class="p-4 mt-auto border-t border-slate-800">
+<div class="flex items-center gap-3 px-2">
+<img alt="RE Monogram" class="w-8 h-8 rounded-full" data-alt="professional headshot of a mature corporate executive in a suit with a warm confident expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPmM-pzk31AvBF0SogAouwXyhR7KV9p5Tu6TeuExffc1NVoAlbtAx-Ewzur0LjRf49TNWrkEDyALQVqnBdy858XWsYiB4LniKb-4SRwqDVznmDs1SbwVKfm5ivtf_aNiZOYIl7CdxUN0-NdJ662bgN21nIrXQkIlG4igQXMHW0v3-53iVQQNS0Hsk9vWXDKTJafe1xjnvn1UmL8fliQZQ9SFwQSQVuHDRqXiHJ5v2371zYOlTwpXPyrqbRAsDAOIELRJedoHqjPShF"/>
+<div class="flex flex-col">
+<span class="text-xs font-semibold text-white">Admin Principal</span>
+<span class="text-[10px] text-slate-500">Soporte Corporativo</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 w-full border-b bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between px-8 h-16 font-inter tabular-nums">
+<div class="flex items-center gap-4 flex-1">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white whitespace-nowrap">Mis Afiliados</h2>
+<div class="relative w-full max-w-md ml-4">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="w-full bg-slate-100 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none" placeholder="Buscar cliente..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="p-2 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="h-8 w-px bg-slate-200 mx-2"></div>
+<button class="flex items-center gap-2 pl-2">
+<span class="material-symbols-outlined text-slate-600" data-icon="account_circle">account_circle</span>
+<span class="text-sm font-medium text-slate-700">Mi Cuenta</span>
+</button>
+</div>
+</header>
+<!-- Canvas Container -->
+<div class="p-8 max-w-[1600px] w-full mx-auto space-y-6">
+<!-- Page Header -->
+<div class="flex items-end justify-between">
+<div>
+<h1 class="font-h1 text-h1 text-on-background">Gestión de Afiliados</h1>
+<p class="font-body text-body text-on-secondary-container mt-1">Administra y da seguimiento a todos tus afiliados y sus estados de póliza.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">file_download</span>
+                        Exportar Reporte
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+                        Nueva Afiliación
+                    </button>
+</div>
+</div>
+<!-- Filters Bar -->
+<div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-wrap items-center gap-4">
+<div class="flex-grow min-w-[200px] relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">filter_list</span>
+<input class="w-full border-slate-200 rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="Filtrar por nombre o cédula..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<select class="border-slate-200 rounded-lg text-sm py-2 px-3 pr-8 focus:ring-2 focus:ring-primary focus:border-primary">
+<option>Estado: Todos</option>
+<option>Activo</option>
+<option>Pendiente</option>
+<option>Vencido</option>
+</select>
+<select class="border-slate-200 rounded-lg text-sm py-2 px-3 pr-8 focus:ring-2 focus:ring-primary focus:border-primary">
+<option>Plan: Todos</option>
+<option>Bronce</option>
+<option>Plata</option>
+<option>Oro</option>
+<option>Esmeralda</option>
+</select>
+<select class="border-slate-200 rounded-lg text-sm py-2 px-3 pr-8 focus:ring-2 focus:ring-primary focus:border-primary">
+<option>Clínica: Todas</option>
+<option>Centro Médico Metropolitano</option>
+<option>Clínica El Ávila</option>
+<option>Hospital de Clínicas Caracas</option>
+</select>
+</div>
+<button class="text-sm font-medium text-slate-500 hover:text-primary px-3 py-2 transition-colors">
+                    Limpiar Filtros
+                </button>
+</div>
+<!-- Data Table Section -->
+<div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-slate-50/50 border-b border-slate-200">
+<tr>
+<th class="p-4 w-10">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</th>
+<th class="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Afiliado</th>
+<th class="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Cédula</th>
+<th class="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Plan</th>
+<th class="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Cuota Mensual</th>
+<th class="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Fecha Inicio</th>
+<th class="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Último Pago</th>
+<th class="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Estado</th>
+<th class="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 font-body">
+<!-- Row 1 -->
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-9 h-9 rounded-full bg-slate-100" data-alt="portrait of a professional woman with a friendly smile, clean corporate background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsQopzQNxoIjhEShzkCMWzJmQ87PNNS69RdNlMohOvMxhrMUN9PbbGifX8pLylXoETRNw7E31IY0vMMFoJqRJwaFtY4dliuhixzTZSI56pLta2Ym82g0HZL3IGxCQ6ZuKmZPg8ooRDfHO-8LmuWm3NjUdX2qdBSQl99cbElfHdoQRynXdj02ixBL-9axvEwMFLJn8j2jfgOOIQpdudVSiyYHXErcRrt3XopJP2w6xq0et7FV-_VFwx7RfqPiSVgQ-RO5_cl0mIry72"/>
+<div class="flex flex-col">
+<span class="font-semibold text-slate-900">María González</span>
+<span class="text-xs text-slate-500">m.gonzalez@email.com</span>
+</div>
+</div>
+</td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-18.456.789</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200">Oro</span>
+</td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$29.00</td>
+<td class="p-4 font-tabular-metrics text-slate-500">15/01/2024</td>
+<td class="p-4 font-tabular-metrics text-slate-500">15/04/2024</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Activo
+                                    </div>
+</td>
+<td class="p-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-9 h-9 rounded-full bg-slate-100" data-alt="portrait of a middle-aged hispanic man in business attire, looking professional and calm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwzjVymefcV5_9GaOsYiMwJDK6QLth1RcLmDdxSFz4h8J2RRKPxpkt_TRFK8fejMI9zvz0Zjzi56-WuglBPJiKjTd6yYkAxDPXqyQgaFTdJKhXpNgVkE3lzBc8BJ9MsWyeeyoZJkjmd6aN7-DhLM4PkD4tkcYxd4YQjh7WZ7PYXqp6-GO4qAhatJ-_msJNkX3mKWfVYq243gXgholFsr2MRTorDM5aG7SNzj6CRTv-L91WSRFBgyFZPD2vdDp_R2ozEACcyf5lDkUU"/>
+<div class="flex flex-col">
+<span class="font-semibold text-slate-900">José Ramírez</span>
+<span class="text-xs text-slate-500">j.ramirez@email.com</span>
+</div>
+</div>
+</td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-22.345.678</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">Plata</span>
+</td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$25.00</td>
+<td class="p-4 font-tabular-metrics text-slate-500">03/02/2024</td>
+<td class="p-4 font-tabular-metrics text-slate-500">01/04/2024</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                        Pendiente
+                                    </div>
+</td>
+<td class="p-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-9 h-9 rounded-full bg-slate-100" data-alt="young professional woman in a modern office setting, bright and clear photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_P4q1sWBHB6YndxxZzNoKX9C7u6s8KeutDD5ggrjD5wEZv5jkh7fRXK3uiOSdjnaJsU91Cf791BXx7XKqwFcNxI5Tx7o2bKN2k3gVQiRf_GLXe_a3aBji4YjKiPr4vBHlcU1u4bWTcpeUH-Ifoa0aTHo9sTe4CVSNZ2ac_CdUR49B2uhHTjtK8nUvC0LGSlQIhBagVrmvDxVXSRxpu_apRGVK7imKBZwXNrGyEle6WMgP8n9__Z-a_9A3Ypl5Axmm5iMN_co-jBFk"/>
+<div class="flex flex-col">
+<span class="font-semibold text-slate-900">Ana Pérez</span>
+<span class="text-xs text-slate-500">a.perez@email.com</span>
+</div>
+</div>
+</td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-15.678.901</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Esmeralda</span>
+</td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$35.00</td>
+<td class="p-4 font-tabular-metrics text-slate-500">20/03/2023</td>
+<td class="p-4 font-tabular-metrics text-slate-500">20/04/2024</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Activo
+                                    </div>
+</td>
+<td class="p-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-9 h-9 rounded-full bg-slate-100" data-alt="professional male portrait with minimalist background, sharp focus and neutral lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP50BizBFmItvEaPLznwKIepNbba3RYwz2NNgZrQ5mT4IVfTtzHgouIiybZFPfATOFQ9sPBKGSVqieAbHWz_ELBiDdzYZkh5MFiESD903HFSeEreKOVWgaM-E-mCVSb7P4V_GJZdzyExYhhiDKoPXAei2-AzF9gBjjD1m7dIuw_T8pu3okkPFl3U6vIFmj6vovI5NxVJH-KfLlPpbeA7t748I2TbjE3ORl7Ody7Yuq2I9SdJmgh4NU_8YT3TGGRZsWPUyAZ6Bdx0sz"/>
+<div class="flex flex-col">
+<span class="font-semibold text-slate-900">Carlos Díaz</span>
+<span class="text-xs text-slate-500">c.diaz@email.com</span>
+</div>
+</div>
+</td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-19.012.345</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200">Bronce</span>
+</td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$20.00</td>
+<td class="p-4 font-tabular-metrics text-slate-500">12/06/2023</td>
+<td class="p-4 font-tabular-metrics text-slate-500">28/03/2024</td>
+<td class="p-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                        Vencido
+                                    </div>
+</td>
+<td class="p-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Dummy rows to fill space -->
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4 flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100"></div><div class="flex flex-col"><span class="font-semibold text-slate-900">Beatriz Luna</span><span class="text-xs text-slate-500">b.luna@email.com</span></div></td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-14.992.102</td>
+<td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200">Oro</span></td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$29.00</td>
+<td class="p-4 text-slate-500">05/02/2024</td>
+<td class="p-4 text-slate-500">05/04/2024</td>
+<td class="p-4"><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Activo</div></td>
+<td class="p-4 text-center"><span class="material-symbols-outlined text-slate-400">more_vert</span></td>
+</tr>
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4 flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100"></div><div class="flex flex-col"><span class="font-semibold text-slate-900">Ricardo Méndez</span><span class="text-xs text-slate-500">r.mendez@email.com</span></div></td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-11.223.344</td>
+<td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Esmeralda</span></td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$35.00</td>
+<td class="p-4 text-slate-500">10/01/2023</td>
+<td class="p-4 text-slate-500">10/04/2024</td>
+<td class="p-4"><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Activo</div></td>
+<td class="p-4 text-center"><span class="material-symbols-outlined text-slate-400">more_vert</span></td>
+</tr>
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4 flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100"></div><div class="flex flex-col"><span class="font-semibold text-slate-900">Elena Castro</span><span class="text-xs text-slate-500">e.castro@email.com</span></div></td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-20.556.778</td>
+<td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">Plata</span></td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$25.00</td>
+<td class="p-4 text-slate-500">22/11/2023</td>
+<td class="p-4 text-slate-500">22/03/2024</td>
+<td class="p-4"><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-error"></span>Vencido</div></td>
+<td class="p-4 text-center"><span class="material-symbols-outlined text-slate-400">more_vert</span></td>
+</tr>
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4 flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100"></div><div class="flex flex-col"><span class="font-semibold text-slate-900">Héctor Ruiz</span><span class="text-xs text-slate-500">h.ruiz@email.com</span></div></td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-16.778.899</td>
+<td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200">Bronce</span></td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$20.00</td>
+<td class="p-4 text-slate-500">14/03/2024</td>
+<td class="p-4 text-slate-500">N/A</td>
+<td class="p-4"><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Pendiente</div></td>
+<td class="p-4 text-center"><span class="material-symbols-outlined text-slate-400">more_vert</span></td>
+</tr>
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4 flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100"></div><div class="flex flex-col"><span class="font-semibold text-slate-900">Sofía Blanco</span><span class="text-xs text-slate-500">s.blanco@email.com</span></div></td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-25.667.882</td>
+<td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200">Oro</span></td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$29.00</td>
+<td class="p-4 text-slate-500">18/02/2024</td>
+<td class="p-4 text-slate-500">18/04/2024</td>
+<td class="p-4"><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Activo</div></td>
+<td class="p-4 text-center"><span class="material-symbols-outlined text-slate-400">more_vert</span></td>
+</tr>
+<tr class="table-row-hover transition-colors">
+<td class="p-4"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-4 flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-slate-100"></div><div class="flex flex-col"><span class="font-semibold text-slate-900">Manuel Vargas</span><span class="text-xs text-slate-500">m.vargas@email.com</span></div></td>
+<td class="p-4 font-tabular-metrics text-slate-600">V-13.445.566</td>
+<td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">Plata</span></td>
+<td class="p-4 text-right font-tabular-metrics font-semibold text-slate-700">$25.00</td>
+<td class="p-4 text-slate-500">01/01/2024</td>
+<td class="p-4 text-slate-500">01/04/2024</td>
+<td class="p-4"><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Activo</div></td>
+<td class="p-4 text-center"><span class="material-symbols-outlined text-slate-400">more_vert</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer Pagination -->
+<div class="p-4 border-t border-slate-200 bg-slate-50/30 flex items-center justify-between font-metadata text-slate-500">
+<div class="flex items-center gap-4">
+<span>Mostrando 1-10 de 127 afiliados</span>
+<div class="flex items-center gap-2">
+<span class="text-xs">Filas por página:</span>
+<select class="border-slate-200 bg-white rounded-md text-xs py-1 px-2 focus:ring-primary focus:border-primary">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-2 border border-slate-200 rounded-md bg-white hover:bg-slate-50 disabled:opacity-50 transition-colors" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-white font-semibold shadow-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-white border border-slate-200 hover:bg-slate-50 transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-white border border-slate-200 hover:bg-slate-50 transition-colors">3</button>
+<span class="px-1">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-white border border-slate-200 hover:bg-slate-50 transition-colors">13</button>
+<button class="p-2 border border-slate-200 rounded-md bg-white hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
