@@ -52,13 +52,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* ─── Brand Header ─── */}
       <div>
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
-          <div className="flex flex-col items-center gap-2 w-full">
-            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-white">
-              <span className="text-lg font-extrabold tracking-tight text-primary">RE</span>
-            </div>
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/90">
-              Red Empresarial
-            </span>
+          <div className="flex flex-col items-center gap-3 w-full">
+            <img src="/sispsa-logo-white.svg" alt="SISPSA Red Empresarial" className="h-10 w-auto" />
             <span className="text-[10px] uppercase tracking-wider text-sidebar-text">
               Health Insurance CRM
             </span>

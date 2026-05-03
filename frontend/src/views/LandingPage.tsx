@@ -27,8 +27,7 @@ export default function LandingPage() {
       <nav className="landing-nav">
         <div className="landing-container nav-inner">
           <div className="nav-logo">
-            <Shield size={28} className="nav-logo-icon" />
-            <div><span className="nav-brand">Red Empresarial</span><span className="nav-sub">SISPSA</span></div>
+            <img src="/sispsa-logo.svg" alt="SISPSA Red Empresarial" className="h-10 w-auto" />
           </div>
           <div className="nav-links">
             <a href="#beneficios">Beneficios</a>
@@ -57,8 +56,7 @@ export default function LandingPage() {
           <div className="mobile-sheet" onClick={(e) => e.stopPropagation()}>
             <div className="mobile-sheet-header">
               <div className="nav-logo">
-                <Shield size={24} className="nav-logo-icon" />
-                <div><span className="nav-brand">Red Empresarial</span><span className="nav-sub">SISPSA</span></div>
+                <img src="/sispsa-logo.svg" alt="SISPSA" className="h-9 w-auto" />
               </div>
               <button className="mobile-close-btn" onClick={closeMobileMenu} aria-label="Cerrar menú"><X size={24} /></button>
             </div>

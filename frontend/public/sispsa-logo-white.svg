@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" fill="none">
+  <!-- Shield shape -->
+  <path d="M14 8 L26 4 L38 8 L38 22 Q38 32 26 37 Q14 32 14 22 Z" fill="white" opacity="0.15"/>
+  <path d="M15.5 9 L26 5.5 L36.5 9 L36.5 22 Q36.5 31 26 35.5 Q15.5 31 15.5 22 Z" fill="none" stroke="white" stroke-width="1.5"/>
+  <!-- Medical cross -->
+  <rect x="23.5" y="14" width="5" height="13" rx="1" fill="white"/>
+  <rect x="20" y="17.5" width="12" height="5" rx="1" fill="white"/>
+  <!-- SISPSA text -->
+  <text x="50" y="26" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="800" letter-spacing="-0.5" fill="white">SISPSA</text>
+  <!-- Tagline -->
+  <text x="51" y="40" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="8.5" font-weight="500" letter-spacing="2.5" fill="rgba(255,255,255,0.7)">RED EMPRESARIAL</text>
+  <!-- Accent line -->
+  <rect x="50" y="44" width="130" height="1.5" rx="1" fill="rgba(255,255,255,0.4)"/>
+</svg>
