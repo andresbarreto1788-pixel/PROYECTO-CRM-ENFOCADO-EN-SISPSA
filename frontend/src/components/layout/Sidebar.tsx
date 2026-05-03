@@ -53,7 +53,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <div>
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
           <div className="flex flex-col items-center gap-3 w-full">
-            <img src="/sispsa-logo-white.svg" alt="SISPSA Red Empresarial" className="h-10 w-auto" />
+            <img
+              src="/sispsa-logo-real.png"
+              alt="SISPSA"
+              className="w-[160px] object-contain"
+              style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}
+            />
             <span className="text-[10px] uppercase tracking-wider text-sidebar-text">
               Health Insurance CRM
             </span>

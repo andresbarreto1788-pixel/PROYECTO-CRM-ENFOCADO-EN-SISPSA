@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
-  Shield, ChevronDown, MapPin, Phone, Building2, Globe,
+  ChevronDown, MapPin, Phone, Building2, Globe,
   CheckCircle2, Upload, ArrowLeft, ArrowRight, User, FileText,
 } from 'lucide-react'
 import { estadosVenezuela, planes } from '@/data/clinicasData'
@@ -57,8 +57,9 @@ export default function RegistroPage() {
       <header className="registro-header">
         <div className="landing-container reg-header-inner">
           <div className="nav-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <Shield size={24} className="nav-logo-icon" />
-            <div><span className="nav-brand">Red Empresarial</span><span className="nav-sub">SISPSA</span></div>
+            <div className="flex items-center rounded-lg px-3 py-1.5" style={{ background: '#152347' }}>
+              <img src="/sispsa-logo-real.png" alt="SISPSA" className="h-9 w-auto object-contain" />
+            </div>
           </div>
           <button className="btn-ghost btn-sm" onClick={() => navigate('/')}>
             <ArrowLeft size={16} /> Volver al Inicio

@@ -27,7 +27,9 @@ export default function LandingPage() {
       <nav className="landing-nav">
         <div className="landing-container nav-inner">
           <div className="nav-logo">
-            <img src="/sispsa-logo.svg" alt="SISPSA Red Empresarial" className="h-10 w-auto" />
+            <div className="flex items-center rounded-lg px-3 py-1.5" style={{ background: '#152347' }}>
+              <img src="/sispsa-logo-real.png" alt="SISPSA" className="h-9 w-auto object-contain" />
+            </div>
           </div>
           <div className="nav-links">
             <a href="#beneficios">Beneficios</a>
@@ -56,7 +58,9 @@ export default function LandingPage() {
           <div className="mobile-sheet" onClick={(e) => e.stopPropagation()}>
             <div className="mobile-sheet-header">
               <div className="nav-logo">
-                <img src="/sispsa-logo.svg" alt="SISPSA" className="h-9 w-auto" />
+                <div className="flex items-center rounded-lg px-3 py-1.5" style={{ background: '#152347' }}>
+                  <img src="/sispsa-logo-real.png" alt="SISPSA" className="h-8 w-auto object-contain" />
+                </div>
               </div>
               <button className="mobile-close-btn" onClick={closeMobileMenu} aria-label="Cerrar menú"><X size={24} /></button>
             </div>
@@ -227,7 +231,11 @@ export default function LandingPage() {
       <footer id="contacto" className="landing-footer">
         <div className="landing-container footer-inner">
           <div className="footer-brand">
-            <div className="nav-logo"><Shield size={24} className="nav-logo-icon" /><div><span className="nav-brand">Red Empresarial</span><span className="nav-sub">SISPSA</span></div></div>
+            <div className="nav-logo">
+              <div className="flex items-center rounded-lg px-3 py-1.5" style={{ background: '#152347' }}>
+                <img src="/sispsa-logo-real.png" alt="SISPSA" className="h-8 w-auto object-contain" />
+              </div>
+            </div>
             <p className="footer-desc">Sistema Integral de Salud Privada S.A. — Cobertura médica corporativa en Venezuela.</p>
           </div>
           <div className="footer-links">
