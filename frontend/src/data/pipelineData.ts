@@ -31,6 +31,7 @@ export interface ProspectCard {
   stageId: PipelineStageId
   notas?: string
   vendedorId: string
+  zona?: string
 }
 
 export const priorityConfig: Record<ProspectPriority, { bg: string; text: string; border: string }> = {

@@ -29,15 +29,19 @@ import {
   GripVertical,
   LayoutList,
   LayoutGrid,
+  X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useCRM } from '@/context/CRMContext'
 import {
   pipelineColumns,
-  initialProspects,
   priorityConfig,
+  type PipelineColumn,
   type ProspectCard,
+  type ProspectPriority,
   type PipelineStageId,
 } from '@/data/pipelineData'
+import { estadosVenezuela } from '@/data/afiliadosData'
 
 /* ═══════════════════════════════════════════
    SORTABLE PROSPECT CARD
@@ -157,9 +161,10 @@ interface KanbanColumnProps {
   readonly dotColor: string
   readonly prospects: ProspectCard[]
   readonly isLastColumn?: boolean
+  readonly onAddClick?: () => void
 }
 
-function KanbanColumn({ columnId, title, color, dotColor, prospects, isLastColumn }: KanbanColumnProps) {
+function KanbanColumn({ columnId, title, color, dotColor, prospects, isLastColumn, onAddClick }: KanbanColumnProps) {
   const totalValue = prospects.reduce((sum, p) => sum + p.valorEstimado, 0)
   const prospectIds = prospects.map((p) => p.id)
 
@@ -209,7 +214,10 @@ function KanbanColumn({ columnId, title, color, dotColor, prospects, isLastColum
       {/* Add button for first column */}
       {columnId === 'nuevo' && (
         <div className="border-t border-border px-3 py-2.5">
-          <button className="flex w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-border bg-surface py-2 text-xs font-medium text-text-muted transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary">
+          <button 
+            onClick={() => onAddClick?.()}
+            className="flex w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-border bg-surface py-2 text-xs font-medium text-text-muted transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary"
+          >
             <Plus className="h-3.5 w-3.5" />
             Añadir Prospecto
           </button>
@@ -225,20 +233,41 @@ function KanbanColumn({ columnId, title, color, dotColor, prospects, isLastColum
 
 export default function PipelineView() {
   const { user } = useAuth()
-  const initialFilteredProspects = useMemo(() => {
-    return initialProspects.filter((p) => {
-      if (user?.role === 'vendedor' && p.vendedorId !== user.email) {
-        return false
-      }
-      return true
-    })
-  }, [user])
-
-  const [prospects, setProspects] = useState<ProspectCard[]>(initialFilteredProspects)
+  const { prospects, moveProspect, addProspect, reorderProspects } = useCRM()
+  
   const [activeId, setActiveId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'board' | 'list'>('board')
   const [mobileStage, setMobileStage] = useState<PipelineStageId>('nuevo')
   const [isMobile, setIsMobile] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  function handleAddProspect(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    const formData = new FormData(e.currentTarget)
+    const newProspect: ProspectCard = {
+      id: crypto.randomUUID(),
+      nombre: formData.get('nombre') as string,
+      apellido: formData.get('apellido') as string,
+      telefono: formData.get('telefono') as string,
+      email: '',
+      plan: formData.get('plan') as string,
+      valorEstimado: Number(formData.get('valor')),
+      prioridad: formData.get('prioridad') as any,
+      diasInactividad: 0,
+      stageId: 'nuevo',
+      vendedorId: user?.email || '',
+      zona: formData.get('zona') as string
+    }
+
+    setTimeout(() => {
+      addProspect(newProspect)
+      setIsSubmitting(false)
+      setIsModalOpen(false)
+    }, 800)
+  }
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768)
@@ -299,11 +328,7 @@ export default function PipelineView() {
     }
 
     if (destColumnId && activeProspectData.stageId !== destColumnId) {
-      setProspects((prev) =>
-        prev.map((p) =>
-          p.id === active.id ? { ...p, stageId: destColumnId! } : p
-        )
-      )
+      moveProspect(active.id as string, destColumnId)
     }
   }
 
@@ -324,10 +349,8 @@ export default function PipelineView() {
 
       if (oldIdx !== newIdx) {
         const reordered = arrayMove(columnProspects, oldIdx, newIdx)
-        setProspects((prev) => {
-          const others = prev.filter((p) => p.stageId !== activeP.stageId)
-          return [...others, ...reordered]
-        })
+        const others = prospects.filter((p) => p.stageId !== activeP.stageId)
+        reorderProspects([...others, ...reordered])
       }
     }
   }
@@ -372,7 +395,10 @@ export default function PipelineView() {
               </div>
             </>
           )}
-          <button className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+          >
             <Plus className="h-4 w-4" />
             {isMobile ? 'Nuevo' : 'Añadir Prospecto'}
           </button>
@@ -445,6 +471,7 @@ export default function PipelineView() {
               dotColor={col.dotColor}
               prospects={groupedProspects[col.id]}
               isLastColumn={col.id === 'afiliacion_exitosa'}
+              onAddClick={() => setIsModalOpen(true)}
             />
           ))}
         </div>
@@ -458,6 +485,68 @@ export default function PipelineView() {
           )}
         </DragOverlay>
       </DndContext>
+
+      {/* ─── Prospect Modal ─── */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-sidebar/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)} />
+          <div className="card-re relative w-[95vw] max-w-[500px] overflow-hidden shadow-2xl">
+            <div className="flex items-center justify-between border-b border-border bg-canvas px-6 py-4">
+              <h3 className="text-lg font-bold text-text-primary">Nuevo Prospecto</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-text-muted hover:text-danger">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleAddProspect} className="p-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Nombre</label>
+                  <input name="nombre" required type="text" placeholder="Ej: Maria" className="form-input text-sm" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Apellido</label>
+                  <input name="apellido" required type="text" placeholder="Ej: Garcia" className="form-input text-sm" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Teléfono</label>
+                  <input name="telefono" required type="text" placeholder="+58 412..." className="form-input text-sm" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Valor Proyectado ($)</label>
+                  <input name="valor" required type="number" placeholder="29" className="form-input text-sm" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Estado / Zona</label>
+                  <select name="zona" required className="form-input text-sm" defaultValue={user?.zone !== 'Nacional' ? user?.zone : ''}>
+                    <option value="" disabled>Seleccione un estado</option>
+                    {estadosVenezuela.map(est => <option key={est} value={est}>{est}</option>)}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Prioridad</label>
+                  <select name="prioridad" className="form-input text-sm">
+                    <option value="Alta">Alta</option>
+                    <option value="Media">Media</option>
+                    <option value="Baja">Baja</option>
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1.5 sm:col-span-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Plan Interés</label>
+                  <input name="plan" required type="text" placeholder="Plan Oro" className="form-input text-sm" />
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-end gap-3">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="btn-ghost py-2">Cancelar</button>
+                <button type="submit" disabled={isSubmitting} className="btn-primary flex items-center justify-center gap-2 px-8 py-2">
+                  {isSubmitting ? 'Registrando...' : 'Añadir al Pipeline'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

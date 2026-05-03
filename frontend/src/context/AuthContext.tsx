@@ -94,6 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Super Admin Maestro (Andrés Gudiño or @sispsa domain)
     const isSuperEmail = email.toLowerCase() === 'andresgudino@gmail.com' || 
+                        email.toLowerCase() === 'andresgudino1788@gmail.com' ||
                         email.toLowerCase().endsWith('@sispsa.com.ve') ||
                         email.toLowerCase().endsWith('@con3xuz.com')
 
@@ -121,7 +122,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     setUser(newUser)
     localStorage.setItem('sispsa_session', JSON.stringify(newUser))
-    addAuditLog('Inicio de Sesión', `Acceso con rol ${role.toUpperCase()} - Estado: ${status}`)
+    addAuditLog('Inicio de Sesión', `Acceso con rol ${role.toUpperCase()} - Estado: ACTIVO`)
     setIsLoading(false)
   }
 

@@ -4,6 +4,9 @@
 export type PlanType = 'Bronce' | 'Plata' | 'Oro' | 'Esmeralda Básico' | 'Esmeralda Plus' | 'Diamante'
 export type AfiliadoStatus = 'Activo' | 'Pendiente' | 'Vencido'
 
+export const planOptions: PlanType[] = ['Bronce', 'Plata', 'Oro', 'Esmeralda Básico', 'Esmeralda Plus', 'Diamante']
+export const statusOptions: AfiliadoStatus[] = ['Activo', 'Pendiente', 'Vencido']
+
 export interface Plan {
   readonly name: PlanType
   readonly price: number
@@ -42,6 +45,13 @@ export const clinicas = [
   'Clínica Santa Sofía',
   'Hospital de Clínicas',
   'Policlínica Metropolitana',
+] as const
+
+export const estadosVenezuela = [
+  'Amazonas', 'Anzoátegui', 'Apure', 'Aragua', 'Barinas', 'Bolívar', 'Carabobo', 'Cojedes', 
+  'Delta Amacuro', 'Distrito Capital', 'Falcón', 'Guárico', 'Lara', 'Mérida', 'Miranda', 
+  'Monagas', 'Nueva Esparta', 'Portuguesa', 'Sucre', 'Táchira', 'Trujillo', 'Vargas (La Guaira)', 
+  'Yaracuy', 'Zulia'
 ] as const
 
 export const afiliadosData: readonly Afiliado[] = []

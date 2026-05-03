@@ -18,10 +18,13 @@ import {
   MessageCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useCRM } from '@/context/CRMContext'
 import {
-  afiliadosData,
-  planCatalog,
   clinicas,
+  estadosVenezuela,
+  planOptions,
+  statusOptions,
+  planCatalog,
   type Afiliado,
   type AfiliadoStatus,
   type PlanType,
@@ -38,8 +41,6 @@ interface SortConfig {
 
 /* ─── Constants ─── */
 const ROWS_PER_PAGE = 10
-const planOptions: PlanType[] = ['Bronce', 'Plata', 'Oro', 'Esmeralda Básico', 'Esmeralda Plus', 'Diamante']
-const statusOptions: AfiliadoStatus[] = ['Activo', 'Pendiente', 'Vencido']
 
 const statusConfig: Record<AfiliadoStatus, { dot: string; bg: string; text: string }> = {
   Activo:    { dot: 'bg-success',  bg: 'bg-success/10',  text: 'text-success' },
@@ -220,6 +221,8 @@ function SortableHeader({ label, field, sort, onSort, className }: SortableHeade
 
 export default function AfiliadosView() {
   const { user } = useAuth()
+  const { afiliados, addAfiliado, deleteAfiliado } = useCRM()
+  
   // ─── State ───
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('Todos')
@@ -231,7 +234,7 @@ export default function AfiliadosView() {
 
   // ─── Filtering ───
   const filteredData = useMemo(() => {
-    return afiliadosData.filter((a) => {
+    return afiliados.filter((a) => {
       // Role-based segmentation
       if (user?.role === 'vendedor' && a.zona !== user.zone) {
         return false
@@ -249,7 +252,7 @@ export default function AfiliadosView() {
 
       return matchesSearch && matchesStatus && matchesPlan && matchesClinica
     })
-  }, [searchQuery, statusFilter, planFilter, clinicaFilter])
+  }, [searchQuery, statusFilter, planFilter, clinicaFilter, user])
 
   // ─── Sorting ───
   const sortedData = useMemo(() => {
@@ -293,6 +296,39 @@ export default function AfiliadosView() {
   useMemo(() => { setCurrentPage(1) }, [searchQuery, statusFilter, planFilter, clinicaFilter])
 
   // ─── Handlers ───
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  function handleAddAffiliate(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    const formData = new FormData(e.currentTarget)
+    const plan = formData.get('plan') as PlanType
+    
+    const newAfiliado: Afiliado = {
+      id: crypto.randomUUID(),
+      nombre: formData.get('nombre') as string,
+      apellido: formData.get('apellido') as string,
+      email: formData.get('email') as string,
+      cedula: formData.get('cedula') as string,
+      plan: plan,
+      cuotaMensual: planCatalog[plan]?.price || 0,
+      fechaInicio: new Date().toISOString().split('T')[0],
+      ultimoPago: '',
+      ultimoPagoRelativo: 'Sin pagos',
+      estado: 'Pendiente',
+      clinica: formData.get('clinica') as string,
+      zona: formData.get('zona') as string || user?.zone || 'Nacional'
+    }
+
+    setTimeout(() => {
+      addAfiliado(newAfiliado)
+      setIsSubmitting(false)
+      setIsModalOpen(false)
+    }, 800)
+  }
+
   function handleSort(field: SortField) {
     setSort((prev) => {
       if (prev.field === field) {
@@ -345,7 +381,10 @@ export default function AfiliadosView() {
             <Download className="h-4 w-4" />
             Exportar Reporte
           </button>
-          <button className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+          >
             <Plus className="h-4 w-4" />
             Nueva Afiliación
           </button>
@@ -664,6 +703,68 @@ export default function AfiliadosView() {
           </div>
         </div>
       </div>
+
+      {/* ─── Registration Modal ─── */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-sidebar/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)} />
+          <div className="card-re relative w-[95vw] max-w-[500px] overflow-hidden shadow-2xl">
+            <div className="flex items-center justify-between border-b border-border bg-canvas px-6 py-4">
+              <h3 className="text-lg font-bold text-text-primary">Nueva Afiliación</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-text-muted hover:text-danger">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleAddAffiliate} className="p-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Nombre</label>
+                  <input name="nombre" required type="text" placeholder="Ej: Juan" className="form-input text-sm" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Apellido</label>
+                  <input name="apellido" required type="text" placeholder="Ej: Pérez" className="form-input text-sm" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Cédula</label>
+                  <input name="cedula" required type="text" placeholder="V-12345678" className="form-input text-sm" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Email</label>
+                  <input name="email" required type="email" placeholder="juan@ejemplo.com" className="form-input text-sm" />
+                </div>
+                <div className="flex flex-col gap-1.5 sm:col-span-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Plan de Salud</label>
+                  <select name="plan" required className="form-input text-sm">
+                    {planOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Estado / Zona</label>
+                  <select name="zona" required className="form-input text-sm" defaultValue={user?.zone !== 'Nacional' ? user?.zone : ''}>
+                    <option value="" disabled>Seleccione un estado</option>
+                    {estadosVenezuela.map(est => <option key={est} value={est}>{est}</option>)}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Clínica Preferida</label>
+                  <select name="clinica" required className="form-input text-sm">
+                    {clinicas.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-end gap-3">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="btn-ghost py-2">Cancelar</button>
+                <button type="submit" disabled={isSubmitting} className="btn-primary flex items-center justify-center gap-2 px-8 py-2">
+                  {isSubmitting ? 'Registrando...' : 'Finalizar Registro'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

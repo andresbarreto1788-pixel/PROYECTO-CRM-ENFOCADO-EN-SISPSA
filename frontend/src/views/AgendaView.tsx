@@ -11,17 +11,16 @@ import {
   MapPin,
   User,
   CheckCircle2,
-  Circle,
+  X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useCRM } from '@/context/CRMContext'
 import {
-  calendarEvents,
   categoryConfig,
   dayNames,
   dayNamesFull,
   weekDates,
   todayStr,
-  getEventsForDate,
   type CalendarEvent,
   type EventCategory,
 } from '@/data/agendaData'
@@ -29,9 +28,10 @@ import {
 /* ─── Event Card (Calendar Grid) ─── */
 interface EventCardProps {
   readonly event: CalendarEvent
+  readonly onClick?: () => void
 }
 
-function EventCard({ event }: EventCardProps) {
+function EventCard({ event, onClick }: EventCardProps) {
   const config = categoryConfig[event.category]
   return (
     <div
@@ -55,9 +55,10 @@ function EventCard({ event }: EventCardProps) {
 /* ─── Task Item (Sidebar) ─── */
 interface TaskItemProps {
   readonly event: CalendarEvent
+  readonly onToggle: (id: string) => void
 }
 
-function TaskItem({ event }: TaskItemProps) {
+function TaskItem({ event, onToggle }: TaskItemProps) {
   const config = categoryConfig[event.category]
   const whatsappUrl = `https://wa.me/${event.clientPhone.replace('+', '')}?text=Hola%20${event.client},%20te%20contacto%20de%20Red%20Empresarial`
 
@@ -86,8 +87,11 @@ function TaskItem({ event }: TaskItemProps) {
               </span>
             )}
           </div>
-          <button className="text-text-muted hover:text-text-primary">
-            <MoreHorizontal className="h-4 w-4" />
+          <button 
+            onClick={() => onToggle(event.id)}
+            className={cn("rounded-md p-1 transition-colors", event.completed ? "text-success bg-success/10" : "text-text-muted hover:bg-canvas")}
+          >
+            {event.completed ? <CheckCircle2 className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
           </button>
         </div>
 
@@ -134,9 +138,18 @@ function TaskItem({ event }: TaskItemProps) {
    ═══════════════════════════════════════════ */
 
 export default function AgendaView() {
+  const { events, addEvent, toggleEventCompleted } = useCRM()
   const [selectedDate, setSelectedDate] = useState(todayStr)
   const [viewMode, setViewMode] = useState<'week' | 'month'>('week')
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Helper inside component to use dynamic events
+  const getEventsForDate = (date: string) => {
+    return events.filter((e) => e.date === date)
+      .sort((a, b) => a.startTime.localeCompare(b.startTime))
+  }
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768)
@@ -146,7 +159,7 @@ export default function AgendaView() {
   }, [])
 
   // Get events for the selected day (for the sidebar)
-  const todayTasks = useMemo(() => getEventsForDate(selectedDate), [selectedDate])
+  const todayTasks = useMemo(() => getEventsForDate(selectedDate), [selectedDate, events])
 
   return (
     <div className="flex flex-col gap-6 h-full lg:flex-row">
@@ -183,7 +196,10 @@ export default function AgendaView() {
                 Mes
               </button>
             </div>
-            <button className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark">
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+            >
               <Plus className="h-4 w-4" />
               Nuevo Evento
             </button>
@@ -335,7 +351,7 @@ export default function AgendaView() {
           <div className="flex-1 flex flex-col gap-6 overflow-y-auto pr-2 max-h-[800px] scrollbar-thin">
             {todayTasks.length > 0 ? (
               todayTasks.map(event => (
-                <TaskItem key={event.id} event={event} />
+                <TaskItem key={event.id} event={event} onToggle={toggleEventCompleted} />
               ))
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -357,6 +373,79 @@ export default function AgendaView() {
           </p>
         </div>
       </div>
+
+      {/* ─── Event Modal ─── */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-sidebar/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)} />
+          <div className="card-re relative w-[95vw] max-w-[500px] overflow-hidden shadow-2xl">
+            <div className="flex items-center justify-between border-b border-border bg-canvas px-6 py-4">
+              <h3 className="text-lg font-bold text-text-primary">Nuevo Evento en Agenda</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-text-muted hover:text-danger">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              setIsSubmitting(true)
+              const formData = new FormData(e.currentTarget)
+              const newEvent: CalendarEvent = {
+                id: crypto.randomUUID(),
+                title: formData.get('title') as string,
+                client: formData.get('client') as string,
+                clientPhone: '',
+                category: formData.get('category') as any || 'seguimiento',
+                date: formData.get('date') as string,
+                startTime: formData.get('time') as string,
+                endTime: '',
+                completed: false
+              }
+              setTimeout(() => {
+                addEvent(newEvent)
+                setIsSubmitting(false)
+                setIsModalOpen(false)
+              }, 600)
+            }} className="p-6">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Título del Evento</label>
+                  <input name="title" required type="text" placeholder="Ej: Seguimiento de Plan Oro" className="form-input text-sm" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Fecha</label>
+                    <input name="date" required type="date" className="form-input text-sm" defaultValue={selectedDate} />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Hora</label>
+                    <input name="time" required type="time" className="form-input text-sm" defaultValue="09:00" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Cliente</label>
+                    <input name="client" required type="text" placeholder="Nombre..." className="form-input text-sm" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Categoría</label>
+                    <select name="category" className="form-input text-sm">
+                      {Object.entries(categoryConfig).map(([key, cfg]) => (
+                        <option key={key} value={key}>{cfg.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-8 flex justify-end gap-3">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="btn-ghost py-2">Cancelar</button>
+                <button type="submit" disabled={isSubmitting} className="btn-primary px-8 py-2">
+                  {isSubmitting ? 'Programando...' : 'Programar'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

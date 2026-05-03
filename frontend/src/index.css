@@ -420,7 +420,7 @@
   }
 
   /* ─── Dashboard Mobile ─── */
-  .flex.flex-col.gap-6.xl\\:flex-row { flex-direction: column; }
+  .flex.flex-col.gap-6.xl\:flex-row { flex-direction: column; }
 
   /* ─── Filters Bar Mobile ─── */
   .card-re.flex.flex-wrap.items-center.gap-3.p-4 {

@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { Search, Bell, ChevronDown, Menu } from 'lucide-react'
-import { currentUser } from '@/data/mockData'
+import { useAuth } from '@/context/AuthContext'
 
 interface TopbarProps {
   readonly title?: string
@@ -7,6 +8,12 @@ interface TopbarProps {
 }
 
 export default function Topbar({ title, onMenuToggle }: TopbarProps) {
+  const { user, logout } = useAuth()
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
+  
+  const userInitials = user ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'AD'
+  const userName = user ? user.name : 'Administrador'
+
   return (
     <header className="topbar">
       {/* Left — Hamburger (mobile) + Page Title */}
@@ -49,13 +56,36 @@ export default function Topbar({ title, onMenuToggle }: TopbarProps) {
         <div className="topbar-divider" />
 
         {/* Profile Dropdown */}
-        <button className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-canvas">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white">
-            {currentUser.initials}
-          </div>
-          <span className="topbar-username">{currentUser.name}</span>
-          <ChevronDown className="h-3.5 w-3.5 text-text-muted topbar-chevron" />
-        </button>
+        <div className="relative">
+          <button 
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+            className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-canvas"
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white">
+              {userInitials}
+            </div>
+            <span className="topbar-username">{userName}</span>
+            <ChevronDown className="h-3.5 w-3.5 text-text-muted topbar-chevron" />
+          </button>
+          
+          {isProfileOpen && (
+            <div className="absolute right-0 top-full mt-2 w-48 rounded-md border border-border bg-surface py-1 shadow-lg">
+              <div className="px-4 py-2 border-b border-border mb-1">
+                <p className="text-sm font-semibold text-text-primary">{userName}</p>
+                <p className="text-[10px] text-text-muted uppercase">{user?.role}</p>
+              </div>
+              <button 
+                onClick={() => {
+                  setIsProfileOpen(false)
+                  logout()
+                }}
+                className="flex w-full items-center px-4 py-2 text-sm text-danger hover:bg-danger/10 transition-colors"
+              >
+                Cerrar Sesión
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   )

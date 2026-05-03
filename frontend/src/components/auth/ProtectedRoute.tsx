@@ -11,6 +11,8 @@ export default function ProtectedRoute({ adminOnly = false, superOnly = false }:
   const { user, isLoading } = useAuth()
   const location = useLocation()
 
+  console.log('[ProtectedRoute] Check:', { userEmail: user?.email, userRole: user?.role, isLoading, path: location.pathname })
+
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-canvas">
