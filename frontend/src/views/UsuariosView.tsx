@@ -1,18 +1,36 @@
 import React, { useState } from 'react'
-import { 
-  Users, Search, UserCheck, UserX, ShieldAlert, 
-  Filter, MoreVertical, CheckCircle2, XCircle, Clock
+import {
+  Users, Search, UserCheck, UserX, ShieldAlert,
+  Filter, MoreVertical, CheckCircle2, XCircle, Clock,
+  UserPlus, X
 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
-import type { UserStatus } from '@/context/AuthContext'
+import type { UserStatus, UserRole } from '@/context/AuthContext'
 import { cn } from '@/lib/utils'
 
-export default function UsuariosView() {
-  const { teamMembers, updateUserStatus } = useAuth()
-  const [searchTerm, setSearchTerm] = useState('')
+interface CreateUserForm {
+  name: string
+  email: string
+  role: UserRole
+  zone: string
+}
 
-  const filteredUsers = teamMembers.filter(u => 
-    u.email.toLowerCase().includes(searchTerm.toLowerCase()) || 
+const ROLES: { value: UserRole; label: string }[] = [
+  { value: 'vendedor', label: 'Vendedor / Asesor' },
+  { value: 'supervisor', label: 'Supervisor' },
+  { value: 'admin', label: 'Administrador' },
+]
+
+export default function UsuariosView() {
+  const { teamMembers, updateUserStatus, createUser } = useAuth()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [form, setForm] = useState<CreateUserForm>({ name: '', email: '', role: 'vendedor', zone: '' })
+  const [successMsg, setSuccessMsg] = useState('')
+
+  const filteredUsers = teamMembers.filter(u =>
+    u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     u.role.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
@@ -27,6 +45,18 @@ export default function UsuariosView() {
     }
   }
 
+  const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!form.name || !form.email || !form.zone) return
+    setIsSubmitting(true)
+    await createUser({ name: form.name, email: form.email, role: form.role, zone: form.zone })
+    setIsSubmitting(false)
+    setShowModal(false)
+    setForm({ name: '', email: '', role: 'vendedor', zone: '' })
+    setSuccessMsg(`Usuario ${form.email} creado exitosamente como ${form.role}.`)
+    setTimeout(() => setSuccessMsg(''), 4000)
+  }
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -34,7 +64,110 @@ export default function UsuariosView() {
           <h1 className="text-2xl font-bold tracking-tight text-text-primary">Gestión de Acceso</h1>
           <p className="text-sm text-text-muted">Aprobar o restringir acceso al ecosistema corporativo.</p>
         </div>
+        <button
+          onClick={() => setShowModal(true)}
+          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 transition-colors"
+        >
+          <UserPlus size={16} />
+          <span>Crear Usuario</span>
+        </button>
       </div>
+
+      {successMsg && (
+        <div className="rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm font-medium text-success">
+          {successMsg}
+        </div>
+      )}
+
+      {/* Modal Crear Usuario */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-border bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="text-lg font-bold text-text-primary">Crear Usuario Verificado</h2>
+                <p className="text-xs text-text-muted">El usuario quedará activo de inmediato.</p>
+              </div>
+              <button onClick={() => setShowModal(false)} className="rounded-lg p-1.5 hover:bg-canvas text-text-muted">
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateUser} className="space-y-4">
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-text-muted uppercase tracking-wide">Nombre completo</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ej: Carlos Mendoza"
+                  value={form.name}
+                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  className="w-full rounded-lg border border-border bg-canvas px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-text-muted uppercase tracking-wide">Correo electrónico</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="usuario@empresa.com"
+                  value={form.email}
+                  onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  className="w-full rounded-lg border border-border bg-canvas px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1.5 block text-xs font-semibold text-text-muted uppercase tracking-wide">Rol</label>
+                  <select
+                    value={form.role}
+                    onChange={e => setForm(f => ({ ...f, role: e.target.value as UserRole }))}
+                    className="w-full rounded-lg border border-border bg-canvas px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  >
+                    {ROLES.map(r => (
+                      <option key={r.value} value={r.value}>{r.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-xs font-semibold text-text-muted uppercase tracking-wide">Zona</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ej: Caracas"
+                    value={form.zone}
+                    onChange={e => setForm(f => ({ ...f, zone: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-canvas px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-primary/20 bg-primary/5 px-3 py-2.5 text-xs text-primary">
+                El usuario deberá cambiar su contraseña en el primer inicio de sesión.
+              </div>
+
+              <div className="flex gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="flex-1 rounded-lg border border-border py-2.5 text-sm font-medium hover:bg-canvas transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 rounded-lg bg-primary py-2.5 text-sm font-semibold text-white hover:bg-primary/90 disabled:opacity-60 transition-colors"
+                >
+                  {isSubmitting ? 'Creando...' : 'Crear Usuario'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Stats Summary */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
