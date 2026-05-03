@@ -1,8 +1,9 @@
 {
-  "framework": "vite",
   "outputDirectory": "frontend/dist",
   "buildCommand": "cd frontend && npm install && npm run build",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "installCommand": "echo skip",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
