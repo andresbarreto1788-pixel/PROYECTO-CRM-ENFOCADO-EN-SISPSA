@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Mail, Lock, Loader2, Eye, EyeOff, ArrowRight, Shield } from 'lucide-react'
+import { Mail, Lock, Loader2, Eye, EyeOff, ArrowRight, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { cn } from '@/lib/utils'
 
@@ -13,7 +13,7 @@ export default function LoginView() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement & EventTarget>) => {
     e.preventDefault()
     if (!email || !password) { setError('Por favor completa todos los campos.'); return }
     setIsSubmitting(true)
@@ -29,163 +29,127 @@ export default function LoginView() {
   }
 
   return (
-    <div className="relative flex min-h-screen w-full overflow-hidden">
-
-      {/* ── Background SISPSA ── */}
-      <div className="absolute inset-0 z-0">
-        <img src="/sispsa-login-bg.svg" alt="" className="h-full w-full object-cover" aria-hidden="true" />
+    <div
+      className="relative flex min-h-screen w-full flex-col items-center justify-center px-4 py-10"
+      style={{ background: 'linear-gradient(160deg, #0d1b3e 0%, #152347 50%, #1a2d5a 100%)' }}
+    >
+      {/* Subtle background glow */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-blue-600/10 blur-[100px]" />
+        <div className="absolute bottom-0 right-0 h-[400px] w-[500px] rounded-full bg-blue-900/20 blur-[120px]" />
       </div>
 
-      {/* ── Left panel — branding (desktop only) ── */}
-      <div className="relative z-10 hidden lg:flex lg:w-1/2 flex-col items-start justify-between p-14">
-        <img src="/sispsa-logo-white.svg" alt="SISPSA Red Empresarial" className="h-12 w-auto" />
+      <div className="relative z-10 flex w-full max-w-[420px] flex-col items-center">
 
-        <div className="max-w-md">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white/80 uppercase tracking-widest backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Sistema CRM Activo
-          </div>
-
-          <h2 className="text-4xl font-extrabold leading-tight text-white">
-            El ecosistema que<br />
-            <span className="text-blue-300">impulsa tu red</span><br />
-            de afiliados
-          </h2>
-          <p className="mt-4 text-base text-white/60 leading-relaxed">
-            Gestiona prospectos, afiliados y tu equipo desde una sola plataforma.
-            Diseñado para los asesores de{' '}
-            <strong className="text-white/80">SISPSA Red Empresarial</strong>.
-          </p>
-
-          <div className="mt-10 grid grid-cols-3 gap-4">
-            {[
-              ['Afiliados', 'activos'],
-              ['Pipeline', 'integrado'],
-              ['Auditoría', 'en tiempo real'],
-            ].map(([n, d]) => (
-              <div key={n} className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                <p className="text-xs font-bold text-white">{n}</p>
-                <p className="mt-0.5 text-[11px] text-white/50">{d}</p>
-              </div>
-            ))}
-          </div>
+        {/* Logo SISPSA real */}
+        <div className="mb-2 w-full max-w-[340px]">
+          <img
+            src="/sispsa-logo-real.png"
+            alt="SISPSA - Sistema Integral de Salud"
+            className="w-full object-contain drop-shadow-2xl"
+            style={{ filter: 'drop-shadow(0 4px 24px rgba(0,0,0,0.4))' }}
+          />
         </div>
 
-        <p className="text-[11px] text-white/30 uppercase tracking-widest">
-          © 2025 SISPSA · Red Empresarial · Powered by CON3XUZ
-        </p>
-      </div>
-
-      {/* ── Right panel — login form ── */}
-      <div className="relative z-10 flex w-full flex-col items-center justify-center px-4 py-12 lg:w-1/2 lg:bg-white/95 lg:backdrop-blur-xl">
-
-        {/* Logo */}
-        <div className="mb-10 flex flex-col items-center text-center">
-          <img src="/sispsa-logo.svg" alt="SISPSA" className="h-14 w-auto lg:h-16" />
-          <div className="mt-5">
-            <h1 className="text-2xl font-extrabold tracking-tight text-text-primary whitespace-nowrap">
-              Acceso Asesores
-            </h1>
-            <p className="mt-1.5 text-sm font-medium text-text-muted max-w-[280px]">
-              Ingresa a tu ecosistema corporativo{' '}
-              <span className="text-primary font-bold">Red Empresarial</span>
-            </p>
-          </div>
+        {/* Divider */}
+        <div className="mb-8 flex items-center gap-3 w-full px-4">
+          <div className="flex-1 h-px bg-white/10" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/30">Portal de Asesores</span>
+          <div className="flex-1 h-px bg-white/10" />
         </div>
 
-        {/* Card */}
-        <div className="w-full max-w-[420px] rounded-[24px] border border-border bg-white p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.07)]">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        {/* Form card */}
+        <div className="w-full rounded-2xl bg-white p-7 shadow-[0_32px_64px_rgba(0,0,0,0.4)]">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
             {error && (
-              <div className="flex items-center gap-2 rounded-xl bg-danger/10 p-4 text-xs font-bold text-danger border border-danger/20 animate-in fade-in zoom-in-95">
-                <Shield size={14} className="flex-shrink-0" />
+              <div className="flex items-center gap-2.5 rounded-xl bg-red-50 border border-red-200 p-3.5 text-sm font-medium text-red-600 animate-in fade-in zoom-in-95">
+                <AlertCircle className="h-4 w-4 flex-shrink-0" />
                 {error}
               </div>
             )}
 
-            <div className="flex flex-col gap-2">
-              <label className="text-[11px] font-bold uppercase tracking-widest text-text-muted ml-1">
+            {/* Email */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
                 Correo Corporativo
               </label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors" />
+                <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-blue-600" />
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="ejemplo@sispsa.com.ve"
+                  placeholder="usuario@sispsa.com.ve"
                   className={cn(
-                    'w-full rounded-xl border bg-surface py-3.5 pl-11 pr-4 text-sm font-medium outline-none transition-all focus:ring-4 focus:ring-primary/10',
-                    error ? 'border-danger focus:border-danger' : 'border-border focus:border-primary'
+                    'w-full rounded-xl border py-3.5 pl-10 pr-4 text-sm font-medium text-slate-800 outline-none transition-all placeholder:text-slate-300',
+                    'focus:ring-4',
+                    error
+                      ? 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-100'
+                      : 'border-slate-200 bg-slate-50 focus:border-blue-500 focus:bg-white focus:ring-blue-100'
                   )}
                 />
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between ml-1">
-                <label className="text-[11px] font-bold uppercase tracking-widest text-text-muted">
+            {/* Password */}
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
                   Contraseña
                 </label>
-                <button type="button" className="text-[11px] font-bold text-primary hover:underline">
+                <button type="button" className="text-[11px] font-semibold text-blue-600 hover:underline">
                   ¿Olvidaste tu clave?
                 </button>
               </div>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors" />
+                <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-blue-600" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className={cn(
-                    'w-full rounded-xl border bg-surface py-3.5 pl-11 pr-12 text-sm font-medium outline-none transition-all focus:ring-4 focus:ring-primary/10',
-                    error ? 'border-danger focus:border-danger' : 'border-border focus:border-primary'
+                    'w-full rounded-xl border py-3.5 pl-10 pr-11 text-sm font-medium text-slate-800 outline-none transition-all placeholder:text-slate-300',
+                    'focus:ring-4',
+                    error
+                      ? 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-100'
+                      : 'border-slate-200 bg-slate-50 focus:border-blue-500 focus:bg-white focus:ring-blue-100'
                   )}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
                 </button>
               </div>
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-2 flex items-center justify-center gap-3 rounded-xl bg-primary py-4 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-xl hover:shadow-primary/20 active:scale-[0.98] disabled:opacity-70"
+              className="mt-1 flex items-center justify-center gap-2.5 rounded-xl py-4 text-sm font-bold text-white transition-all active:scale-[0.98] disabled:opacity-60"
+              style={{ background: 'linear-gradient(135deg, #1a2d5a 0%, #1e3a8a 100%)' }}
             >
-              {isSubmitting ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                <>
-                  <span>Iniciar Sesión</span>
-                  <ArrowRight size={16} />
-                </>
-              )}
+              {isSubmitting
+                ? <Loader2 className="h-5 w-5 animate-spin" />
+                : <><span>Iniciar Sesión</span><ArrowRight size={16} /></>
+              }
             </button>
           </form>
 
-          <div className="mt-10 border-t border-border pt-8 text-center">
-            <p className="text-[10px] leading-relaxed text-text-muted uppercase tracking-wider font-semibold">
-              Solo personal autorizado SISPSA<br />
-              Monitoreo de auditoría activo
-            </p>
-          </div>
+          <p className="mt-6 text-center text-[10px] font-semibold uppercase tracking-widest text-slate-300">
+            Acceso exclusivo · Personal autorizado SISPSA
+          </p>
         </div>
 
         {/* Footer */}
-        <div className="mt-10 flex flex-col items-center gap-2">
-          <p className="text-[11px] font-bold text-white/60 lg:text-text-muted tracking-widest uppercase">
-            Powered by <span className="text-white lg:text-text-primary">CON3XUZ</span> · v1.2.1
-          </p>
-          <div className="h-1 w-12 rounded-full bg-white/20 lg:bg-border" />
-        </div>
-
+        <p className="mt-8 text-[11px] font-semibold uppercase tracking-widest text-white/20">
+          Powered by <span className="text-white/35">CON3XUZ</span> · v1.2.1
+        </p>
       </div>
     </div>
   )
