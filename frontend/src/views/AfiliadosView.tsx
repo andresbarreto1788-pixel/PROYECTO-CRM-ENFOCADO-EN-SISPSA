@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
+import { useAuth } from '@/context/AuthContext'
 import {
   Search,
   Plus,
@@ -14,6 +15,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  MessageCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
@@ -217,6 +219,7 @@ function SortableHeader({ label, field, sort, onSort, className }: SortableHeade
    ═══════════════════════════════════════════ */
 
 export default function AfiliadosView() {
+  const { user } = useAuth()
   // ─── State ───
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('Todos')
@@ -229,6 +232,11 @@ export default function AfiliadosView() {
   // ─── Filtering ───
   const filteredData = useMemo(() => {
     return afiliadosData.filter((a) => {
+      // Role-based segmentation
+      if (user?.role === 'vendedor' && a.zona !== user.zone) {
+        return false
+      }
+
       const matchesSearch =
         searchQuery === '' ||
         `${a.nombre} ${a.apellido}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -394,7 +402,8 @@ export default function AfiliadosView() {
         )}
       </div>
 
-      {/* ─── Data Table ─── */}
+      {/* ─── Data Table (Desktop) ─── */}
+      <div className="desktop-table-wrap">
       <div className="card-re overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -513,11 +522,9 @@ export default function AfiliadosView() {
 
               {paginatedData.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center">
-                    <p className="text-sm text-text-muted">No se encontraron afiliados con los filtros seleccionados.</p>
-                    <button onClick={clearFilters} className="mt-2 text-sm font-medium text-primary hover:underline">
-                      Limpiar filtros
-                    </button>
+                  <td colSpan={9} className="px-4 py-16 text-center">
+                    <p className="text-base font-medium text-text-primary">No hay afiliados registrados</p>
+                    <p className="mt-1 text-sm text-text-muted">Inicie la gestión de equipo o cargue nuevos datos para ver información.</p>
                   </td>
                 </tr>
               )}
@@ -573,6 +580,86 @@ export default function AfiliadosView() {
             >
               Siguiente
               <ChevronRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      {/* ─── Mobile Card List ─── */}
+      <div className="mobile-card-list">
+        {paginatedData.map((afiliado) => {
+          const plan = planCatalog[afiliado.plan]
+          const status = statusConfig[afiliado.estado]
+          const initials = `${afiliado.nombre[0]}${afiliado.apellido[0]}`
+          return (
+            <div key={afiliado.id} className="mobile-afiliado-card">
+              <div className="mac-header">
+                <div className="mac-name">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                    {initials}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-text-primary">{afiliado.nombre} {afiliado.apellido}</p>
+                    <p className="text-xs text-text-muted">{afiliado.email}</p>
+                  </div>
+                </div>
+                <span className={cn('inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium', status.bg, status.text)}>
+                  <span className={cn('h-1.5 w-1.5 rounded-full', status.dot)} />
+                  {afiliado.estado}
+                </span>
+              </div>
+              <div className="mac-fields">
+                <div className="mac-field">
+                  <label>Cédula</label>
+                  <span>{afiliado.cedula}</span>
+                </div>
+                <div className="mac-field">
+                  <label>Plan</label>
+                  <span className={cn('inline-flex rounded-full px-2 py-0.5 text-xs font-medium', plan.bgClass, plan.colorClass)}>{afiliado.plan}</span>
+                </div>
+                <div className="mac-field">
+                  <label>Cuota</label>
+                  <span>${afiliado.cuotaMensual.toFixed(2)}</span>
+                </div>
+                <div className="mac-field">
+                  <label>Último Pago</label>
+                  <span>{afiliado.ultimoPagoRelativo}</span>
+                </div>
+              </div>
+              <div className="mac-actions">
+                <button><Eye className="h-3.5 w-3.5" /> Ver</button>
+                <button><CreditCard className="h-3.5 w-3.5" /> Pago</button>
+                <button className="mac-whatsapp"><MessageCircle className="h-3.5 w-3.5" /> WhatsApp</button>
+              </div>
+            </div>
+          )
+        })}
+
+        {paginatedData.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-sm text-text-muted">No se encontraron afiliados.</p>
+            <button onClick={clearFilters} className="mt-2 text-sm font-medium text-primary hover:underline">Limpiar filtros</button>
+          </div>
+        )}
+
+        {/* Mobile Pagination */}
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-xs text-text-muted">{((currentPage - 1) * ROWS_PER_PAGE) + 1}–{Math.min(currentPage * ROWS_PER_PAGE, sortedData.length)} de {sortedData.length}</span>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="flex items-center rounded-md border border-border bg-surface px-3 py-2 text-sm disabled:opacity-40"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="flex items-center rounded-md border border-border bg-surface px-3 py-2 text-sm disabled:opacity-40"
+            >
+              <ChevronRight className="h-4 w-4" />
             </button>
           </div>
         </div>

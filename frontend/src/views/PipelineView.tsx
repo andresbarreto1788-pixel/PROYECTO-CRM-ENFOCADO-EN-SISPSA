@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useAuth } from '@/context/AuthContext'
 import {
   DndContext,
   DragOverlay,
@@ -197,8 +198,9 @@ function KanbanColumn({ columnId, title, color, dotColor, prospects, isLastColum
           ))}
 
           {prospects.length === 0 && (
-            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-8 text-center">
-              <p className="text-xs text-text-muted">Arrastra un prospecto aquí</p>
+            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-12 text-center">
+              <p className="text-sm font-medium text-text-primary">No hay prospectos asignados</p>
+              <p className="mt-1 text-[11px] text-text-muted">Arrastre aquí para gestionar el flujo</p>
             </div>
           )}
         </div>
@@ -222,9 +224,28 @@ function KanbanColumn({ columnId, title, color, dotColor, prospects, isLastColum
    ═══════════════════════════════════════════ */
 
 export default function PipelineView() {
-  const [prospects, setProspects] = useState<ProspectCard[]>([...initialProspects])
+  const { user } = useAuth()
+  const initialFilteredProspects = useMemo(() => {
+    return initialProspects.filter((p) => {
+      if (user?.role === 'vendedor' && p.vendedorId !== user.email) {
+        return false
+      }
+      return true
+    })
+  }, [user])
+
+  const [prospects, setProspects] = useState<ProspectCard[]>(initialFilteredProspects)
   const [activeId, setActiveId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'board' | 'list'>('board')
+  const [mobileStage, setMobileStage] = useState<PipelineStageId>('nuevo')
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -324,32 +345,36 @@ export default function PipelineView() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {/* View Toggle */}
-          <div className="flex rounded-md border border-border bg-surface">
-            <button
-              onClick={() => setViewMode('board')}
-              className={cn(
-                'flex items-center gap-1.5 rounded-l-md px-3 py-2 text-sm font-medium transition-colors',
-                viewMode === 'board' ? 'bg-primary text-white' : 'text-text-muted hover:text-text-primary'
-              )}
-            >
-              <LayoutGrid className="h-4 w-4" />
-              Vista Kanban
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={cn(
-                'flex items-center gap-1.5 rounded-r-md px-3 py-2 text-sm font-medium transition-colors',
-                viewMode === 'list' ? 'bg-primary text-white' : 'text-text-muted hover:text-text-primary'
-              )}
-            >
-              <LayoutList className="h-4 w-4" />
-              Vista Lista
-            </button>
-          </div>
+          {!isMobile && (
+            <>
+              {/* View Toggle */}
+              <div className="flex rounded-md border border-border bg-surface">
+                <button
+                  onClick={() => setViewMode('board')}
+                  className={cn(
+                    'flex items-center gap-1.5 rounded-l-md px-3 py-2 text-sm font-medium transition-colors',
+                    viewMode === 'board' ? 'bg-primary text-white' : 'text-text-muted hover:text-text-primary'
+                  )}
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                  Vista Kanban
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={cn(
+                    'flex items-center gap-1.5 rounded-r-md px-3 py-2 text-sm font-medium transition-colors',
+                    viewMode === 'list' ? 'bg-primary text-white' : 'text-text-muted hover:text-text-primary'
+                  )}
+                >
+                  <LayoutList className="h-4 w-4" />
+                  Vista Lista
+                </button>
+              </div>
+            </>
+          )}
           <button className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark">
             <Plus className="h-4 w-4" />
-            Añadir Prospecto
+            {isMobile ? 'Nuevo' : 'Añadir Prospecto'}
           </button>
         </div>
       </div>
@@ -385,6 +410,21 @@ export default function PipelineView() {
         </div>
       </div>
 
+      {/* ─── Mobile Stage Selector ─── */}
+      <div className="pipeline-stage-selector">
+        {pipelineColumns.map((col) => (
+          <button
+            key={col.id}
+            className={cn('pipeline-stage-btn', mobileStage === col.id && 'active')}
+            onClick={() => setMobileStage(col.id)}
+          >
+            <span className="stage-dot" style={{ backgroundColor: col.color }} />
+            {col.title}
+            <span className="text-[10px] opacity-70">({groupedProspects[col.id].length})</span>
+          </button>
+        ))}
+      </div>
+
       {/* ─── Kanban Board ─── */}
       <DndContext
         sensors={sensors}
@@ -394,7 +434,9 @@ export default function PipelineView() {
         onDragEnd={handleDragEnd}
       >
         <div className="flex gap-4 overflow-x-auto pb-4">
-          {pipelineColumns.map((col) => (
+          {pipelineColumns
+            .filter((col) => !isMobile || col.id === mobileStage)
+            .map((col) => (
             <KanbanColumn
               key={col.id}
               columnId={col.id}

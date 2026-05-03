@@ -1,4 +1,5 @@
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '@/context/AuthContext'
 import {
   Home,
   Users,
@@ -6,6 +7,11 @@ import {
   Calendar,
   GraduationCap,
   Settings,
+  X,
+  LogOut,
+  ShieldCheck,
+  Activity,
+  UserCog,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { navigationItems, bottomNavItems, currentUser } from '@/data/mockData'
@@ -17,27 +23,54 @@ const iconMap: Record<string, React.ElementType> = {
   Calendar,
   GraduationCap,
   Settings,
+  ShieldCheck,
+  Activity,
+  UserCog,
 }
 
-export default function Sidebar() {
+interface SidebarProps {
+  readonly isOpen: boolean
+  readonly onClose: () => void
+}
+
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
+
+  const handleLogout = () => {
+    logout()
+    onClose()
+    navigate('/')
+  }
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen flex-col justify-between bg-sidebar text-white"
-      style={{ width: 'var(--sidebar-width)' }}
-    >
+    <aside className={cn(
+      'sidebar-container',
+      isOpen && 'sidebar-open'
+    )}>
       {/* ─── Brand Header ─── */}
       <div>
-        <div className="flex flex-col items-center gap-2 px-6 pt-6 pb-6">
-          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-white">
-            <span className="text-lg font-extrabold tracking-tight text-primary">RE</span>
+        <div className="flex items-center justify-between px-6 pt-6 pb-4">
+          <div className="flex flex-col items-center gap-2 w-full">
+            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-white">
+              <span className="text-lg font-extrabold tracking-tight text-primary">RE</span>
+            </div>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/90">
+              Red Empresarial
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-sidebar-text">
+              Health Insurance CRM
+            </span>
           </div>
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/90">
-            Red Empresarial
-          </span>
-          <span className="text-[10px] uppercase tracking-wider text-sidebar-text">
-            Health Insurance CRM
-          </span>
+          {/* Mobile close button */}
+          <button
+            onClick={onClose}
+            className="sidebar-close-btn"
+            aria-label="Cerrar menú"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
 
         {/* ─── Navigation Menu ─── */}
@@ -51,6 +84,7 @@ export default function Sidebar() {
               <NavLink
                 key={item.path}
                 to={item.path}
+                onClick={onClose}
                 className={cn(
                   'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-150',
                   isActive
@@ -63,6 +97,58 @@ export default function Sidebar() {
               </NavLink>
             )
           })}
+          
+          {/* Admin specific items */}
+          {user?.role === 'admin' && (
+            <NavLink
+              to="/equipo"
+              onClick={onClose}
+              className={cn(
+                'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-150',
+                location.pathname === '/equipo'
+                  ? 'sidebar-item-active'
+                  : 'border-l-3 border-transparent text-sidebar-text hover:bg-sidebar-hover hover:text-white'
+              )}
+            >
+              <ShieldCheck className="h-[18px] w-[18px]" />
+              <span>Gestión de Equipo</span>
+            </NavLink>
+          )}
+
+          {/* Super Admin specific items (V1.2.0) */}
+          {user?.role === 'super_admin' && (
+            <>
+              <div className="mx-3 mt-4 mb-2 text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                Master Control
+              </div>
+              <NavLink
+                to="/usuarios"
+                onClick={onClose}
+                className={cn(
+                  'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-150',
+                  location.pathname === '/usuarios'
+                    ? 'sidebar-item-active'
+                    : 'border-l-3 border-transparent text-sidebar-text hover:bg-sidebar-hover hover:text-white'
+                )}
+              >
+                <UserCog className="h-[18px] w-[18px]" />
+                <span>Gestión de Usuarios</span>
+              </NavLink>
+              <NavLink
+                to="/auditoria"
+                onClick={onClose}
+                className={cn(
+                  'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-150',
+                  location.pathname === '/auditoria'
+                    ? 'sidebar-item-active'
+                    : 'border-l-3 border-transparent text-sidebar-text hover:bg-sidebar-hover hover:text-white'
+                )}
+              >
+                <Activity className="h-[18px] w-[18px]" />
+                <span>Centro de Auditoría</span>
+              </NavLink>
+            </>
+          )}
         </nav>
       </div>
 
@@ -76,6 +162,7 @@ export default function Sidebar() {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={onClose}
               className={cn(
                 'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-150',
                 isActive
@@ -90,14 +177,24 @@ export default function Sidebar() {
         })}
 
         {/* User Profile */}
-        <div className="mt-4 flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-3">
-          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white">
-            {currentUser.initials}
+        <div className="mt-4 flex flex-col gap-2">
+          <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-3">
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white">
+              {user ? user.email[0].toUpperCase() : currentUser.initials}
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-medium text-white">{user ? user.email.split('@')[0] : currentUser.name}</p>
+              <p className="truncate text-xs text-sidebar-text">{user ? 'Asesor' : currentUser.role}</p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-white">{currentUser.name}</p>
-            <p className="truncate text-xs text-sidebar-text">{currentUser.role}</p>
-          </div>
+          
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-sidebar-text transition-all duration-150 hover:bg-danger/20 hover:text-white"
+          >
+            <LogOut className="h-[18px] w-[18px]" />
+            <span>Cerrar Sesión</span>
+          </button>
         </div>
       </div>
     </aside>

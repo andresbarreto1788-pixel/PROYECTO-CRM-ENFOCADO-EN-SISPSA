@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {
   Calendar as CalendarIcon,
   ChevronLeft,
@@ -136,6 +136,14 @@ function TaskItem({ event }: TaskItemProps) {
 export default function AgendaView() {
   const [selectedDate, setSelectedDate] = useState(todayStr)
   const [viewMode, setViewMode] = useState<'week' | 'month'>('week')
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   // Get events for the selected day (for the sidebar)
   const todayTasks = useMemo(() => getEventsForDate(selectedDate), [selectedDate])
@@ -183,77 +191,130 @@ export default function AgendaView() {
         </div>
 
         {/* Calendar Grid (Weekly View) */}
-        <div className="card-re flex-1 flex flex-col overflow-hidden min-h-[600px]">
+        <div className="card-re flex-1 flex flex-col overflow-hidden min-h-[500px]">
           {/* Calendar Sub-header */}
-          <div className="flex items-center justify-between border-b border-border bg-canvas px-6 py-4">
+          <div className="flex items-center justify-between border-b border-border bg-canvas px-4 md:px-6 py-4">
             <div className="flex items-center gap-4">
-              <h2 className="text-lg font-bold text-text-primary">Abril 2024</h2>
+              <h2 className="text-base md:text-lg font-bold text-text-primary">Abril 2024</h2>
               <div className="flex items-center gap-1">
-                <button className="p-1 rounded-md hover:bg-border transition-colors">
+                <button className="p-1 rounded-md hover:bg-border transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center">
                   <ChevronLeft className="h-5 w-5" />
                 </button>
-                <button className="px-3 py-1 text-xs font-medium border border-border rounded-md bg-surface hover:bg-canvas">
+                <button className="px-3 py-1 text-xs font-medium border border-border rounded-md bg-surface hover:bg-canvas min-h-[40px]">
                   Hoy
                 </button>
-                <button className="p-1 rounded-md hover:bg-border transition-colors">
+                <button className="p-1 rounded-md hover:bg-border transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center">
                   <ChevronRight className="h-5 w-5" />
                 </button>
               </div>
             </div>
-            {/* Legend */}
-            <div className="hidden md:flex items-center gap-4 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
-              {Object.entries(categoryConfig).map(([key, config]) => (
-                <div key={key} className="flex items-center gap-1.5">
-                  <span className={cn('h-2 w-2 rounded-full', config.dot)} />
-                  {config.label}
-                </div>
-              ))}
-            </div>
+            {/* Legend - hidden on mobile */}
+            {!isMobile && (
+              <div className="flex items-center gap-4 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
+                {Object.entries(categoryConfig).map(([key, config]) => (
+                  <div key={key} className="flex items-center gap-1.5">
+                    <span className={cn('h-2 w-2 rounded-full', config.dot)} />
+                    {config.label}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Grid Layout */}
-          <div className="flex-1 grid grid-cols-7 divide-x divide-border">
-            {dayNames.map((day, idx) => {
-              const dateStr = weekDates[idx]
-              const isToday = dateStr === todayStr
-              const isSelected = dateStr === selectedDate
-              const dateObj = new Date(dateStr)
-              const dayNum = dateObj.getDate()
-              const events = getEventsForDate(dateStr)
-
-              return (
-                <div
-                  key={day}
-                  onClick={() => setSelectedDate(dateStr)}
-                  className={cn(
-                    'flex flex-col min-h-0 cursor-pointer transition-colors hover:bg-canvas/50',
-                    isSelected && 'bg-primary/5 ring-1 ring-inset ring-primary/20',
-                    isToday && !isSelected && 'bg-primary/[0.02]'
-                  )}
-                >
-                  {/* Day Header */}
-                  <div className={cn(
-                    'flex flex-col items-center py-3 border-b border-border gap-0.5',
-                    isToday ? 'text-primary' : 'text-text-muted'
-                  )}>
-                    <span className="text-[10px] font-bold uppercase tracking-widest">{day}</span>
-                    <span className={cn(
-                      'flex h-8 w-8 items-center justify-center rounded-full text-lg font-bold tabular-nums',
-                      isToday ? 'bg-primary text-white' : 'text-text-primary'
-                    )}>
-                      {dayNum}
-                    </span>
-                  </div>
-
-                  {/* Day Content (Events) */}
-                  <div className="flex-1 p-1 overflow-y-auto max-h-[600px] scrollbar-hide">
-                    {events.map(event => (
-                      <EventCard key={event.id} event={event} />
-                    ))}
-                  </div>
+          {/* Grid Layout - Responsive */}
+          <div className={cn(
+            "flex-1 grid divide-x divide-border",
+            isMobile ? "grid-cols-1 overflow-y-auto" : "grid-cols-7"
+          )}>
+            {isMobile ? (
+              /* Mobile Date Selector (Horizontal Scroll) */
+              <div className="flex flex-col h-full">
+                <div className="flex gap-2 overflow-x-auto p-4 border-b border-border scrollbar-hide bg-surface sticky top-0 z-10">
+                  {dayNames.map((day, idx) => {
+                    const dateStr = weekDates[idx]
+                    const isToday = dateStr === todayStr
+                    const isSelected = dateStr === selectedDate
+                    const dateObj = new Date(dateStr)
+                    const dayNum = dateObj.getDate()
+                    return (
+                      <button
+                        key={day}
+                        onClick={() => setSelectedDate(dateStr)}
+                        className={cn(
+                          'flex flex-col items-center gap-1 min-w-[60px] p-3 rounded-xl transition-all border',
+                          isSelected 
+                            ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20 scale-105' 
+                            : 'bg-canvas border-border text-text-muted hover:border-primary/30'
+                        )}
+                      >
+                        <span className="text-[10px] font-bold uppercase tracking-widest">{day}</span>
+                        <span className="text-lg font-bold tabular-nums">{dayNum}</span>
+                      </button>
+                    )
+                  })}
                 </div>
-              )
-            })}
+                {/* Mobile Day Content */}
+                <div className="p-4 flex flex-col gap-2">
+                  <h3 className="text-xs font-bold text-text-muted uppercase tracking-widest mb-2">Eventos para el día</h3>
+                  {getEventsForDate(selectedDate).length > 0 ? (
+                    getEventsForDate(selectedDate).map(event => (
+                      <div key={event.id} className="card-re p-4 flex flex-col gap-2 border-l-4" style={{ borderColor: categoryConfig[event.category].dot.replace('bg-', '') }}>
+                        <div className="flex justify-between items-start">
+                          <span className="font-bold text-text-primary">{event.title}</span>
+                          <span className="text-xs font-semibold tabular-nums text-primary">{event.startTime}</span>
+                        </div>
+                        <p className="text-xs text-text-muted">{event.client}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-xs text-text-muted italic">Sin eventos para este día.</div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              /* Desktop Grid */
+              dayNames.map((day, idx) => {
+                const dateStr = weekDates[idx]
+                const isToday = dateStr === todayStr
+                const isSelected = dateStr === selectedDate
+                const dateObj = new Date(dateStr)
+                const dayNum = dateObj.getDate()
+                const events = getEventsForDate(dateStr)
+
+                return (
+                  <div
+                    key={day}
+                    onClick={() => setSelectedDate(dateStr)}
+                    className={cn(
+                      'flex flex-col min-h-0 cursor-pointer transition-colors hover:bg-canvas/50',
+                      isSelected && 'bg-primary/5 ring-1 ring-inset ring-primary/20',
+                      isToday && !isSelected && 'bg-primary/[0.02]'
+                    )}
+                  >
+                    {/* Day Header */}
+                    <div className={cn(
+                      'flex flex-col items-center py-3 border-b border-border gap-0.5',
+                      isToday ? 'text-primary' : 'text-text-muted'
+                    )}>
+                      <span className="text-[10px] font-bold uppercase tracking-widest">{day}</span>
+                      <span className={cn(
+                        'flex h-8 w-8 items-center justify-center rounded-full text-lg font-bold tabular-nums',
+                        isToday ? 'bg-primary text-white' : 'text-text-primary'
+                      )}>
+                        {dayNum}
+                      </span>
+                    </div>
+
+                    {/* Day Content (Events) */}
+                    <div className="flex-1 p-1 overflow-y-auto max-h-[600px] scrollbar-hide">
+                      {events.map(event => (
+                        <EventCard key={event.id} event={event} />
+                      ))}
+                    </div>
+                  </div>
+                )
+              })
+            )}
           </div>
         </div>
       </div>
