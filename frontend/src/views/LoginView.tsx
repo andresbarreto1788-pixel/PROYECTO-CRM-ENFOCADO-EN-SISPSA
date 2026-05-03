@@ -49,7 +49,7 @@ export default function LoginView() {
               Acceso Asesores
             </h1>
             <p className="mt-2 text-sm font-medium text-text-muted max-w-[280px]">
-              Ingresa a tu ecosistema corporativo <span className="text-primary font-bold">CON3XUZ</span>
+              Ingresa a tu ecosistema corporativo <span className="text-primary font-bold">Red Empresarial</span>
             </p>
           </div>
         </div>

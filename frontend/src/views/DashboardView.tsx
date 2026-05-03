@@ -36,7 +36,7 @@ export default function DashboardView() {
           Buenos días, {user?.name || 'Asesor'} 👋
         </h1>
         <p className="text-sm font-medium text-text-muted">
-          Este es el resumen operativo de tu gestión en <span className="text-primary font-bold">CON3XUZ</span>.
+          Este es el resumen operativo de tu gestión en <span className="text-primary font-bold">Red Empresarial</span>.
         </p>
       </header>
 

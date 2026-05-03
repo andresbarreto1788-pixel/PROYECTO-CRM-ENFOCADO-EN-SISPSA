@@ -25,7 +25,7 @@ export default function PendingReviewView() {
         <h1 style={{ color: '#1A1B22', marginBottom: '20px' }}>Cuenta en Revisión</h1>
         <p style={{ color: '#64748B', fontSize: '14px', lineHeight: '1.6' }}>
           Hola, <strong>{user?.email || 'Asesor'}</strong>.<br/><br/>
-          Tu cuenta está siendo revisada por el Administrador de <strong>CON3XUZ</strong>.
+          Tu cuenta está siendo revisada por el Administrador de <strong>Red Empresarial</strong>.
         </p>
         <button 
           onClick={logout}

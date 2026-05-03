@@ -52,7 +52,7 @@ export default function UpdatePasswordView() {
         boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
         textAlign: 'center'
       }}>
-        <h1 style={{ color: '#1A1B22', marginBottom: '10px' }}>Seguridad CON3XUZ</h1>
+        <h1 style={{ color: '#1A1B22', marginBottom: '10px' }}>Seguridad Red Empresarial</h1>
         <p style={{ color: '#64748B', fontSize: '14px', marginBottom: '30px' }}>
           Establece tu contraseña permanente.
         </p>

@@ -29,7 +29,7 @@ export default function RegistroAsesorView() {
           </div>
           <h1 className="text-2xl font-bold text-text-primary">Solicitud Enviada</h1>
           <p className="mt-3 text-text-muted">
-            Tu postulación ha sido recibida correctamente. El equipo de <span className="font-bold text-primary">CON3XUZ</span> validará tus datos en breve y te contactará por correo.
+            Tu postulación ha sido recibida correctamente. El equipo de <span className="font-bold text-primary">Red Empresarial</span> validará tus datos en breve y te contactará por correo.
           </p>
           <button
             onClick={() => navigate('/')}

@@ -33,7 +33,7 @@ export default function AppLayout({ title }: AppLayoutProps) {
           
           <footer className="mt-auto border-t border-border/50 py-6 text-center">
             <p className="text-[10px] font-bold text-text-muted tracking-widest uppercase">
-              Powered by <span className="text-text-primary">CON3XUZ</span> | Versión 1.2.0
+              Red Empresarial SISPSA | Desarrollado por <span className="text-text-primary">CON3XUZ</span>
             </p>
           </footer>
         </main>

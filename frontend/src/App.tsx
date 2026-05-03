@@ -20,7 +20,7 @@ import UsuariosView from '@/views/UsuariosView'
 import PendingReviewView from '@/views/PendingReviewView'
 
 /**
- * Red Empresarial SISPSA (CON3XUZ)
+ * Red Empresarial SISPSA (Red Empresarial)
  * Main Application Component — Version 1.2.0
  */
 // Error Boundary Component

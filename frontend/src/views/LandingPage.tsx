@@ -28,7 +28,7 @@ export default function LandingPage() {
         <div className="landing-container nav-inner">
           <div className="nav-logo">
             <Shield size={28} className="nav-logo-icon" />
-            <div><span className="nav-brand">CON3XUZ</span><span className="nav-sub">SISPSA</span></div>
+            <div><span className="nav-brand">Red Empresarial</span><span className="nav-sub">SISPSA</span></div>
           </div>
           <div className="nav-links">
             <a href="#beneficios">Beneficios</a>
@@ -58,7 +58,7 @@ export default function LandingPage() {
             <div className="mobile-sheet-header">
               <div className="nav-logo">
                 <Shield size={24} className="nav-logo-icon" />
-                <div><span className="nav-brand">CON3XUZ</span><span className="nav-sub">SISPSA</span></div>
+                <div><span className="nav-brand">Red Empresarial</span><span className="nav-sub">SISPSA</span></div>
               </div>
               <button className="mobile-close-btn" onClick={closeMobileMenu} aria-label="Cerrar menú"><X size={24} /></button>
             </div>
@@ -113,7 +113,7 @@ export default function LandingPage() {
       {/* Benefits */}
       <section id="beneficios" className="section-benefits">
         <div className="landing-container">
-          <div className="section-header"><span className="section-tag">¿Por qué elegir CON3XUZ?</span><h2 className="section-title">La red de salud que tu empresa necesita</h2></div>
+          <div className="section-header"><span className="section-tag">¿Por qué elegir Red Empresarial?</span><h2 className="section-title">La red de salud que tu empresa necesita</h2></div>
           <div className="benefits-grid">
             <div className="benefit-card"><div className="benefit-icon"><Building2 size={28} /></div><h3>Red Nacional de Clínicas</h3><p>Más de 150 centros de salud en los 24 estados del país.</p></div>
             <div className="benefit-card"><div className="benefit-icon"><DollarSign size={28} /></div><h3>Planes desde $20/mes</h3><p>Opciones flexibles para todo presupuesto empresarial.</p></div>
@@ -219,7 +219,7 @@ export default function LandingPage() {
       <section className="section-cta">
         <div className="landing-container">
           <div className="cta-card">
-            <div className="cta-content"><h2>¿Listo para proteger a tu equipo?</h2><p>Más de 500 empresas ya forman parte de CON3XUZ.</p></div>
+            <div className="cta-content"><h2>¿Listo para proteger a tu equipo?</h2><p>Más de 500 empresas ya forman parte de Red Empresarial.</p></div>
             <button className="btn-primary btn-lg" onClick={() => navigate('/registro')}><span>Iniciar Registro</span><ArrowRight size={20} /></button>
           </div>
         </div>
@@ -229,14 +229,14 @@ export default function LandingPage() {
       <footer id="contacto" className="landing-footer">
         <div className="landing-container footer-inner">
           <div className="footer-brand">
-            <div className="nav-logo"><Shield size={24} className="nav-logo-icon" /><div><span className="nav-brand">CON3XUZ</span><span className="nav-sub">SISPSA</span></div></div>
+            <div className="nav-logo"><Shield size={24} className="nav-logo-icon" /><div><span className="nav-brand">Red Empresarial</span><span className="nav-sub">SISPSA</span></div></div>
             <p className="footer-desc">Sistema Integral de Salud Privada S.A. — Cobertura médica corporativa en Venezuela.</p>
           </div>
           <div className="footer-links">
             <div className="footer-col"><h4>Servicios</h4><a href="#planes">Planes</a><a href="#clinicas">Clínicas</a><a href="#beneficios">Beneficios</a></div>
             <div className="footer-col"><h4>Contacto</h4><a href="mailto:info@sispsa.com.ve"><Mail size={14} /> info@sispsa.com.ve</a><a href="tel:+582129000000"><Phone size={14} /> (0212) 900-0000</a></div>
           </div>
-          <div className="footer-bottom"><p>© 2026 CON3XUZ | Red Empresarial SISPSA. Todos los derechos reservados.</p></div>
+          <div className="footer-bottom"><p>© 2026 Red Empresarial SISPSA | Desarrollado por CON3XUZ. Todos los derechos reservados.</p></div>
         </div>
       </footer>
     </div>

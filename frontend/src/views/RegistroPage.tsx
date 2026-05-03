@@ -58,7 +58,7 @@ export default function RegistroPage() {
         <div className="landing-container reg-header-inner">
           <div className="nav-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
             <Shield size={24} className="nav-logo-icon" />
-            <div><span className="nav-brand">CON3XUZ</span><span className="nav-sub">SISPSA</span></div>
+            <div><span className="nav-brand">Red Empresarial</span><span className="nav-sub">SISPSA</span></div>
           </div>
           <button className="btn-ghost btn-sm" onClick={() => navigate('/')}>
             <ArrowLeft size={16} /> Volver al Inicio
@@ -243,7 +243,7 @@ export default function RegistroPage() {
 
                 <label className="terms-check">
                   <input type="checkbox" checked={formData.aceptaTerminos} onChange={(e) => setFormData({ ...formData, aceptaTerminos: e.target.checked })} />
-                  <span>Acepto los <a href="#" className="terms-link">Términos y Condiciones</a> y la <a href="#" className="terms-link">Política de Privacidad</a> de CON3XUZ.</span>
+                  <span>Acepto los <a href="#" className="terms-link">Términos y Condiciones</a> y la <a href="#" className="terms-link">Política de Privacidad</a> de Red Empresarial.</span>
                 </label>
               </div>
 
