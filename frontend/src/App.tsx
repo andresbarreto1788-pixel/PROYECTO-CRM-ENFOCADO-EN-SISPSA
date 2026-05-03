@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from '@/context/AuthContext'
 import { CRMProvider } from '@/context/CRMContext'
+import { NotificationProvider } from '@/context/NotificationContext'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import AppLayout from '@/components/layout/AppLayout'
 import DashboardView from '@/views/DashboardView'
@@ -54,6 +55,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 function App() {
   return (
     <ErrorBoundary>
+      <NotificationProvider>
       <CRMProvider>
         <AuthProvider>
           <BrowserRouter>
@@ -92,6 +94,7 @@ function App() {
         </BrowserRouter>
         </AuthProvider>
       </CRMProvider>
+      </NotificationProvider>
     </ErrorBoundary>
   )
 }
