@@ -1,9 +1,7 @@
 {
   "outputDirectory": "frontend/dist",
   "buildCommand": "cd frontend && npm install && npm run build",
-  "installCommand": "echo skip",
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/((?!assets|favicon).*)", "destination": "/index.html" }
   ]
 }
